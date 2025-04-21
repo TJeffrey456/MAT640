@@ -38,6 +38,8 @@ Help1:=proc()
 if args=NULL then
 
 print(`The SUPPORTING procedures are: BT, CC, Cliques, Comp, EstimateAverageClique,  Findy, Gnd, HD1, IsCo, lam2, LC, MaxNN, MST1, MST. NuST, Neis, STbf, TotTri, Tri, UBT, Verify1, Vk`):
+# add BFS, DFS, 
+print(`These are the SUPPORTING procedures we added after instruction: `):
 print(` `):
 
 else
@@ -54,6 +56,10 @@ if args=NULL then
 print(` : A Maple package for performing algorithms in graph theory  (under construction) `):
 
 print(`The MAIN procedures are: AM, An,Bn, AntiPC, Ck, Dij, DijP, Graphs, LuckyVertex, MinMaxNN, Mul, MST, NuCGc, PC, RG, RWG, SeqBT, SeqUBT  `):
+# things to add find Hamilton if Dirac holds, Eulerian (check degrees), Chinese postman problem, perfect matching, coloring (Brooke's thm), find chromatic polynomial, TOPO SORT
+# Check if we can do anything fun with planarity
+# We should do smth with Max flow - min cut (Ford Fulkerson, Edmon-Karp)
+print(`The ADDITIONAL procedures are: `):
 print(`  `):
 
 elif nargs=1 and args[1]=AM then
