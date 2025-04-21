@@ -1,0 +1,1003 @@
+
+######################################################################
+## AGT.txt Save this file as  AGT.txt  to use it,                    #
+# stay in the                                                        #
+## same directory, get into Maple (by typing: maple <Enter> )        #
+## and then type:  read `AGT.txt` <Enter>                            #
+## Then follow the instructions given there                          #
+##                                                                   #
+## Written by the Experimental Mathematics class taught by Dr. Z.    #
+# (Doron Zeilberger), Rutgers University , Spring 2025               #
+######################################################################
+
+with(combinat):
+with(linalg):
+print(`First Written: March-May tested for Maple 2024 `):
+print(`UNDER CONSTRUCTION`):
+
+print(`Version  : April 6, 2025  `):
+print():
+print(`Written by the Experimental Mathematics class taught by Dr. Z. (Doron Zeilberger), Rutgers University , Spring 2025`):
+
+print(`This is  AGT.txt, A Maple package to perform algorithms on graphs`):
+
+print():
+print(`The most current version is available on WWW at:`):
+print(` http://sites.math.rutgers.edu/~zeilberg/EM25/AGT.txt .`):
+print(`Please report all bugs to: DoronZeil at gmail dot com .`):
+print():
+print(`For general help, and a list of the MAIN functions,`):
+print(` type "Help();". For specific help type "Help(procedure_name);" `):
+print(`For a list of the supporting functions type: Help1();`):
+print():
+ 
+
+
+
+Help1:=proc()
+if args=NULL then
+
+print(`The SUPPORTING procedures are: BT, CC, Cliques, Comp, EstimateAverageClique,  Findy, Gnd, HD1, IsCo, lam2, LC, MaxNN, MST1, MST. NuST, Neis, STbf, TotTri, Tri, UBT, Verify1, Vk`):
+print(` `):
+
+else
+Help(args):
+
+fi:
+
+
+end:
+
+Help:=proc()
+if args=NULL then
+
+print(` : A Maple package for performing algorithms in graph theory  (under construction) `):
+
+print(`The MAIN procedures are: AM, An,Bn, AntiPC, Ck, Dij, DijP, Graphs, LuckyVertex, MinMaxNN, Mul, MST, NuCGc, PC, RG, RWG, SeqBT, SeqUBT  `):
+print(`  `):
+
+elif nargs=1 and args[1]=AM then
+print(` AM(G): inputs a graph [n,E] and outputs the adjacency matrix, represented as a list of length n of lists of length n,`):
+print(` such that M[i][j]=1 if {i,j} belongs to E and 0 otherwise. Try:`):
+print(`AM([3,{{1,2},{1,3}}]);`);
+
+elif nargs=1 and args[1]=An then
+print(`An(n): the 2^n by 2^n matrix (given as a list of lists) in Knuth's writeup of Huang's proof. Try:`):
+print(`An(4);`):
+
+elif nargs=1 and args[1]=AntiPC then
+print(`AntiPC(L): inputs a list of integers of length n-2 with entries in {1, ...,n} and outputs the tree whose Prufer code it is, as a set of edges. Try`):
+print(`AntiPC([3,4]);`):
+
+
+elif nargs=1 and args[1]=Bn then
+print(`Bn(n): the 2^n by 2^n matrix (given as a list of lists) in Knuth's writeup of Huang's proof. Try:`):
+print(`Bn(4);`):
+
+elif nargs=1 and args[1]=BT then
+print(`BT(n): the set of full binary trees on n leaves`):
+
+elif nargs=1 and args[1]=CC then
+print(`CC(G,i): The connected component in the graph G where  vertex i belongs. Try:`):
+print(`CC([5,{{1,2},{1,3},{4,5}}],1);`):
+
+elif nargs=1 and args[1]=Ck then
+print(`Ck(k): the k-dim unit cube as a graph in our format. Try:`):
+print(` Ck(3); `):
+
+elif nargs=1 and args[1]=Cliques then
+print(`Cliques(G,k): inputs a graph G and a pos. integer k outputs the set of`):
+print(`k-cliques. Try:`):
+print(`Cliques ([4,{{1,2},{1,3},{2,3},{1,4}}],2);`):
+
+
+elif nargs=1 and args[1]=Comp then
+print(`Comp(G): the complement of G=[n,E]. Try:`):
+print(`Comp([3,{{1,2}}]);`):
+
+
+elif nargs=1 and args[1]=Dij then
+print(`Dij(G,a): implements Dijskra's algorithm. Inputs a weighted graph G=[n,E,DT] and a starting `):
+print(`vertex a outputs a, outputs a list, let's call it L,  of length n, such that L[i] is the MINIMAL DISTANCE`):
+print(`from vertex a to vertex i. In particular L[a]=0. Try:`):
+print(`G:=RWG(10,1/2,10); Dij(G,5);`):
+
+elif nargs=1 and args[1]=DijP then
+print(`DijP(G,a): implements Dijskra's algorithm. Same as Dij(G,a), but in ADDITION, outputs the list of shortest paths realizing the shortest distances. Try:`):
+print(`G:=RWG(10,1/2,10); DijP(G,5);`):
+
+elif nargs=1 and args[1]=EstimateAverageClique then
+print(`EstimateAverageClique(n,p,k,K) : Uses simulation to estimate the average number of k-cliques in  RG(n,p), followed by the theoretical value `):
+print(`binomial(n,k)*p^binomial(k,2). Try:`):
+print(`EstimateAverageClique(10,1/3,5,1000) ;`):
+
+elif nargs=1 and args[1]=Findy then
+print(`Findy(n,H): inputs a pos. integer n and a subset H with exacty 2^(n-1)+1 elements`):
+print(`and outputs the vector y promised in Hao Wang's proof. Try:`):
+print(`Findy(3,{1,2,3,4,5});`):
+
+elif nargs=1 and args[1]=Gnd then
+print(`Gnd(n,d): the graph whose vertices are {0,...,n-1} and edges {i, i+j mod n} j=1..d. Try:`):
+print(`Gnd(10,2);`):
+
+elif nargs=1 and args[1]=Graphs then
+print(`Graphs(n): inputs a non-neg. integer and outputs the set of ALL`):
+print(`UNDIRECTED SIMPLE graphs on {1,...,n} where asuch a graph is written as [n,E]  where an edge is a two element set {i,j} (the edge between vertex i and vertex j). Try:`):
+print(`Graphs(3);`):
+
+elif nargs=1 and args[1]=HD1 then
+print(`HD1(v): inputs a 0-1 vector and outputs all the vectors where exactly one bit is changed. Try:`):
+print(`HD1([1,0,1]);`):
+
+elif nargs=1 and args[1]=IsCo then
+print(`IsCo(G): Is the graph G connected? Try:`):
+print(`IsCo([5,{{1,2},{1,3},{2,3},{4,5}}]);`):
+
+elif nargs=1 and args[1]=lam2 then
+print(`lam2(G): inputs a graph and returns FAIL if it is not regular, otherwise it returns`):
+print(`[degree, Lambda_2] (Lambda_2 is the second largestg eigenvalue of the adjacency matrix). Try:`):
+print(`lam2(Gnd(10,3));`):
+
+elif nargs=1 and args[1]=LC then
+print(`LC(p): inputs a rational number between 0 and 1 and outputs true with prob. p. Try:`):
+print(`add(x[LC(1/3)],i=1..300);`):
+
+elif nargs=1 and args[1]=LuckyVertex then
+print(`LuckyVertex(n,H): inputs  pos. integer n and a subset H of size 2^(n-1)+1 outputs a member`):
+print(`that is guaranteed to have at least sqrt(n) neighbors in H. Try:`):
+print(`LuckyVertex(3,{1,3,4,5,6});`):
+
+elif nargs=1 and args[1]=MaxNN then
+print(`MaxNN(G,H): inputs a graph G=[n,E] and a subset H of {1, ..., n} outputs the`):
+print(`maximum number of neigbors a member that belong to H over all members of H. Code by Pablo Blanco. Try: `):
+print(`MaxNN([3,{{1,2},{1,3},{2,3}}],{1,2});`):
+
+elif nargs=1 and args[1]=MinMaxNN then
+print(`MinMaxNN(G,r): minimum of MaxNN(G,H) over all subsets H of {1, ..., n} with cardinality r`):
+print(`Note: the Hao Huang famous sensitivity theorem says that`):
+print(`MinMaxNN(Ck(n),2^(n-1)+1)>=sqrt(n). Try`):
+print(`MinMaxNN(Ck(3),5);`):
+
+
+
+elif nargs=1 and args[1]=MST then
+print(`MST(G): inputs a weighted graph G and performs the Kruskal. Try:`):
+print(`G:=RWG(10,1/2,5); MST(G);`):
+
+elif nargs=1 and args[1]=MST1 then
+print(`MST1(G,partT,AvE): inputs a weighted graph G and performs ONE step in the Kruskal`):
+print(`algoritm by looking at the cheapest member of AvE and trying to join it to`):
+print(`partT if it does NOT create a cycle, either way we remove it from AvE. Try:`):
+print(`G:=RWG(10,1/2,5); MST1(G,{},G[2]);`):
+
+elif nargs=1 and args[1]=Mul then
+print(`Mul(A,B): the product of matrix A and B (assuming that it exists). Try:`):
+print(`Mul([[a1,a2]],[[b1],[b2]]);`):
+
+elif nargs=1 and args[1]=Neis then
+print(`Neis(G): inputs a graph G=[n,E] and outputs a list of length n, N, such that`):
+print(`N[i] is the set of neighbors of vertex i. Try:`):
+print(`Neis([3,{{1,2},{1,3}}]);`):
+
+
+elif nargs=1 and args[1]=NuST then
+print(`NuST(G): The number of spanning trees of G (using the Matrix Tree Therorem. Try:`):
+print(`NuST([4,{{1,2},{1,3},{2,3},{1,4},{2,4},{3,4}}]);`):
+
+elif nargs=1 and args[1]=NuCGclever then
+print(`NuCGclever(n): the first n terms of the sequence enumerating CONNECTED labeled graphs on n vertices. The STUPID WAY`):
+print(`OEIS A001187. Try:`):
+print(`[seq(NuCGstupid(n),n=1..5)];`):
+
+
+elif nargs=1 and args[1]=NuCGc then
+print(`NuCGc(n): the first n terms of the sequence enumerating CONNECTED labeled graphs on n vertices. The CLEVER WAY. Using exponential generating functions`):
+print(`OEIS A001187. Try:`):
+print(`NuCGc(5);`):
+
+elif nargs=1 and args[1]=NuCGs then
+print(`NuCGs(n): the first n terms of the sequence enumerating CONNECTED labeled graphs on n vertices. The STUPID WAY. JUST FOR CHEKING`):
+print(`OEIS A001187. Try:`):
+print(`NuCGs(5);`):
+
+elif nargs=1 and args[1]=PC then
+print(`PC(T): The Prufer code of the tree T given as a set of edges. NOT in the format [n,E]. Try:`):
+print(`PC({{1,2},{1,3},{1,4}});`):
+
+elif nargs=1 and args[1]=RG then
+print(`RG(n,p): inputs a pos. integer n and outputs a random graph on {1, ..., n} where each edge {i,j} is picked independently with probability p. Try:`):
+print(`RG(10,1/2);`):
+
+elif nargs=1 and args[1]=RWG then
+print(`RWG(n,p,K): inputs a pos. integer n and outputs a triple [n,E,DT]`):
+print(`where the vertices are {1,...,n} the edges are of the form {i,j} and`):
+print(`DT is table such DT[{i,j}] is the weight of the edge {i,j}`):
+
+elif nargs=1 and args[1]=SeqBT then
+print(`SeqBT(N): the first N terms of the sequence enumerating the number of full binary trees with n leaves. Try:`):
+print(`SeqBT(20);`):
+
+
+elif nargs=1 and args[1]=SeqUBT then
+print(`SeqUBT(N): the first N terms of the sequence enumerating the number of full binary UNLABELED trees with n leaves. Try:`):
+print(`SeqUBT(20);`):
+
+elif nargs=1 and args[1]=STbf then
+print(`STbf(G): Inputs a graph G=[n,E] and outputs the set of all spanning trees`):
+print(`By brute force. Only for checking. Try:`):
+print(`STbf([3,{{1,2},{1,3}}]);`):
+
+elif nargs=1 and args[1]=TotTri then
+print(`TotTri(G): the total number of love triangles and hate triangles. Try:`):
+print(`TotTr([3,{{1,2},{1,3},{2,3}}]);`):
+
+elif nargs=1 and args[1]=Tri then
+print(`Tri(G): inputs a graph [n,E] and outputs the set of all triples {i,j,k}`):
+print(`such {{i,j},{i,k},{j,k}} is a subset of E. Try`):
+print(`Tri([4,{{1,2},{1,3},{2,3},{1,4},{2,4},{3,4}}]); `):
+
+
+elif nargs=1 and args[1]=UBT then
+print(`UBT(n): the set of full binary UNLABELED trees on n leaves`):
+
+elif nargs=1 and args[1]=Verify1 then
+print(`Verify1(n): checks that An(n) times Bn(n)=sqrt(n)*Bn(n) in Hao Huang's proof (Knuth's version). Try:`):
+print(`Verify1(5);`):
+
+elif nargs=1 and args[1]=Vk then
+print(`Vk(k): The list of all 0-1 vectors of length k in lex order. Try:`):
+print(`Vk(5);`):
+
+else
+ print(`There is no such thing as`, args):
+
+fi:
+
+
+end:
+
+
+
+
+
+
+#From C1.txt
+#An undirected  graph is a set of vertices V and a set of edges
+#[V,E]   and edge e={i,j} where i and j belong to V
+#Our vertices are labeled {1,2,...,n}
+#Our data structure is [n,E] where E is the set of edges
+#[3,{{1,2},{1,3},{2,3}}];
+#If there are n vertices how many (undirected) graphs there
+
+#Graphs(n): inputs a non-neg. integer and outputs the set of ALL
+#UNDIRECTED SIMPLE graphs on {1,...,n} where asuch a graph is written as [n,E]  where an edge is a two element set {i,j} (the edge between vertex i and vertex j). Try
+#Graphs(3);
+Graphs:=proc(n) local i,j,S,E,s:
+E:={seq(seq({i,j},j=i+1..n),   i=1..n)};
+S:=powerset(E):
+{seq([n,s],s in S)}:
+end:
+
+#Tri(G): inputs a graph [n,E] and outputs the set of all triples {i,j,k}
+#such {{i,j},{i,k},{j,k}} is a subset of E
+Tri:=proc(G) local n,S,E,i,j,k:
+n:=G[1]:
+E:=G[2]:
+#S is the set of love triangles
+S:={}:
+for i from  1 to n do
+ for j from i+1 to n do
+   for k from j+1 to n do
+    #if member({i,j},E) and member({i,k},E), and member({j,k},E) then
+     if {{i,j},{i,k},{j,k}} minus E={} then
+       S:=S union {{i,j,k}}:
+    fi:
+   od:
+ od:
+od:
+
+S:
+end:
+
+#Comp(G): the complement of G=[n,E]
+Comp:=proc(G) local n,i,j,E:
+n:=G[1]:
+E:=G[2]:
+[n,{seq(seq({i,j},j=i+1..n),   i=1..n)} minus E]:
+end:
+
+#TotTri(G): the total number of love triangles and hate triangles. Try:
+#TotTr([3,{{1,2},{1,3},{2,3}}]);
+TotTri:=proc(G)
+nops(Tri(G))+nops(Tri(Comp(G))):
+end:
+
+#End From C1.txt
+
+#Start from C2.txt
+
+#LC(p): inputs a rational number between 0 and 1 and outputs true with prob. p. Try:
+#add(x[LC(1/3)],i=1..300);
+LC:=proc(p) local a,b,ra:
+
+if not (p>=0 and p<=1) then
+  RETURN(FAIL):
+fi:
+
+if p=0 then
+ RETURN(false):
+fi:
+if p=1 then
+  RETURN(true):
+fi:
+
+if not type(p,fraction) then
+ RETURN(FAIL):
+fi:
+
+a:=numer(p):
+b:=denom(p):
+ra:=rand(1..b)():
+if ra<=a then
+ true:
+else
+ false:
+fi:
+end:
+
+#RG(n,p): inputs a pos. integer n and outputs a random graph on {1, ..., n} where each edge {i,j} is picked independently with probability p. Try:
+#RG(10,1/2);
+RG:=proc(n,p) local E,i,j:
+E:={}:
+for i from 1 to n do
+ for j from i+1 to n do
+   if LC(p) then
+    E:=E union {{i,j}}:
+   fi:
+ od:
+od:
+[n,E]:
+end:
+
+#Cliques(G,k): inputs a graph G and a pos. integer k outputs the set of
+#k-cliques. Try:
+#Cliques ([4,{{1,2},{1,3},{2,3},{1,4}}],2);
+Cliques:=proc(G,k) local n, E,S,i,c,C:
+n:=G[1]:
+E:=G[2]:
+S:={}:
+C:=choose({seq(i,i=1..n)},k):
+for c in C do
+ if choose(c,2) minus E={} then
+  S:=S union {c}:
+ fi:
+od:
+S:
+end:
+
+#End from C2.txt
+
+#Start  from C3.txt
+#Neis(G): inputs a graph G=[n,E] and outputs a list of length n, N, such that
+#N[i] is the set of neighbors of vertex i. Try:
+#Neis([3,{{1,2},{1,3}}]);
+Neis:=proc(G) local n,E,N,i,e:
+n:=G[1]:
+E:=G[2]:
+for i from 1 to n do
+ N[i]:={}:
+od:
+for e in E do
+N[e[1]]:=N[e[1]] union {e[2]}:
+N[e[2]]:=N[e[2]] union {e[1]}:
+od:
+[seq(N[i],i=1..n)]:
+end:
+
+#CC(G,i): The connected component in the graph G where  vertex i belongs. Try:
+#CC([5,{{1,2},{1,3},{4,5}}],1);
+CC:=proc(G,i) local n,C1,C2,C3,N,i1:
+if not (type(G,list) and nops(G)=2 and type(G[1],integer) and G[1]>=0 and type(G[2],set)) then
+  RETURN(FAIL):
+fi:
+n:=G[1]:
+N:=Neis(G):
+C1:={i}:
+C2:=C1 union { seq(op(N[i1]), i1 in C1)}:
+while C1<>C2 do
+ C3:=C2 union { seq(op(N[i1]), i1 in C2)}:
+C1:=C2:
+C2:=C3:
+od:
+C2:
+end:
+
+#IsCo(G): Is the graph G connected? Try:
+#IsCo([5,{{1,2},{1,3},{2,3},{4,5}}]);
+IsCo:=proc(G): evalb(nops(CC(G,1))=G[1]):end:
+
+#NuCGs(n): the first n terms of the sequence enumerating CONNECTED labeled graphs on n vertices. The STUPID WAY
+#OEIS A001187. Try:
+#NuCGs(5);
+NuCGs:=proc(n) local i,g:
+[seq(coeff(add(IsCo(g), g in Graphs(i)),true,1),i=1..n)]:
+end:
+
+NuCGc:=proc(n) local f,z,i:
+#The number of labeled graphs on n vertices is 2^binomial(n,2)
+f:=log(add(2^binomial(i,2)*z^i/i!,i=0..n)):
+f:=taylor(f,z=0,n+1):
+[seq(i!*coeff(f,z,i),i=1..n)]:
+end:
+
+## adjacency matrices Code adpated from Aurora Hiveley
+# AM(G): inputs a graph [n,E] and outputs the adjacency matrix, represented as a list of length n of lists of length n,
+# such that M[i][j]=1 if {i,j} belongs to E and 0 otherwise.
+# For example AM([2,{{1,2}}]); should output [[0,1],[1,0]] .
+AM:=proc(G) local n,E,T,i,j:
+n:=G[1]:
+E:=G[2]:
+
+for i from 1 to n do
+ T[i,i]:=0:
+od:
+
+for i from 1 to n do
+ for j from i+1 to n do
+ if member({i,j},E) then
+   T[i,j]:=1:
+   T[j,i]:=1:
+else
+   T[i,j]:=0:
+   T[j,i]:=0:
+ fi:
+od:
+od:
+[seq([seq(T[i,j],j=1..n)],i=1..n)]:
+end:
+
+#end from C3.txt
+
+#start from C4.txt
+#STbf(G): Inputs a graph G=[n,E] and outputs the set of all spanning trees
+#By brute force. Only for checking. Try:
+#STbf({[3,{{1,2},{1,3}}]);
+STbf:=proc(G) local n,E,S,ST,g:
+n:=G[1]:
+E:=G[2]:
+S:=choose(E,n-1):
+ST:={}:
+for g in S do
+ if IsCo([n,g]) then
+  ST:=ST union {[n,g]}:
+ fi:
+od:
+ST:
+end:
+
+#NuST(G): The number of spanning trees of G (using the Matrix Tree Therorem. Try:
+#NuST([4,{{1,2},{1,3},{2,3},{1,4},{2,4},{3,4}}]);
+NuST:=proc(G) local n,D1,A,i:
+n:=G[1]:
+A:=AM(G):
+D1:=[seq(add(A[i]),i=1..n)]:
+D1:=[seq([0$(i-1),D1[i],0$(n-i)], i=1..n)]:
+A:=D1-A:
+A:=[ seq([op(1..n-1,A[i])]   , i=1..n-1)]:
+det(A):
+end:
+
+#code by Joseph Koutsoutis
+#EstimateAverageClique(n,p,k,K) : Uses simulation to estimate the average number of k-cliques in  RG(n,p). The theoretical value is
+#binomial(n,k)*p^binomial(k,2). Try:
+#EstimateAverageClique(10,1/3,5,1000) ;
+
+EstimateAverageClique:=proc(n,p,k,K) local i:
+  evalf([add(nops(Cliques(RG(n,p),k)), i=1..K) / K, binomial(n,k)*p^binomial(k,2)]):
+end:
+
+
+#End from C4.txt
+
+
+#start from C7.txt
+
+
+#PC1(T): one step in the Pruffer code algorithm. Looks for the smallest leaf
+#outputs the pair [a,T1] where a is the LABEL of the (only) neighboor of the smallest leaf
+#and T1 is the smaller tree where the only edge incident that leaf is removed
+PC1:=proc(T) local e,V,N,v,L,a:
+V:={seq(op(e),e in T)}:
+for v in V do
+ N[v]:={}:
+od:
+
+for e in T do
+N[e[1]]:=N[e[1]] union {e[2]}:
+N[e[2]]:=N[e[2]] union {e[1]}:
+od:
+L:={}:
+for v in V do
+ if nops(N[v])=1 then
+   L:=L union {v}:
+ fi:
+od:
+a:=min(L):
+[N[a][1],T minus { {a,N[a][1] }} ]:
+end:
+
+#PC(T): inputs a tree as a set of vertices outputs its Prufer code. Try:
+#PC({{1,2},{1,3}});
+PC:=proc(T) local n,P,i,T1,nick:
+n:=nops(T)+1:
+T1:=T:
+P:=[]:
+for i from 1 to n-2 do
+ nick:=PC1(T1):
+ P:=[op(P),nick[1]]:
+ T1:=nick[2]:
+od:
+P:
+end:
+
+#Added after class (based on Nick Belov's idea and top of p. 49 of Robin Wilson's book)
+#AntiPC(P): inputs a list of length n-2 with entries from {1, ...,n} outputs the tree with
+#labels {1, ...,n} whose Pruffer code is P
+AntiPC:=proc(P) local n,V,i,P1,b1,E:
+n:=nops(P)+2:
+V:={seq(i,i=1..n)}:
+P1:=P:
+E:={}:
+
+while P1<>[] do
+b1:=min (V minus convert(P1,set)):
+E:=E union {{P1[1],b1}}:
+P1:=[op(2..nops(P1),P1)]:
+V:=V minus {b1}:
+od:
+
+E union {V}:
+
+
+end:
+
+#end from C7.txt
+
+#Start from C9.txt
+
+#C9.txt: Feb. 20,2025
+
+
+#Gnd(n,d): the graph whose vertices are {0,...,n-1} and edges {i, i+j mod n} j=1..d. Try:
+#Gnd(10,2);
+Gnd:=proc(n,d) local i,j,E:
+E:={ seq(seq({ i,i+j mod n},j=1..d),i=0..n-1)}:
+
+[n,subs({seq(i=i+1,i=0..n-1)},E)]:
+end:
+
+#lam2(G): inputs a graph and returns FAIL if it is not regular, otherwise it returns
+#[degree, Lambda_2] (Lambda_2 is the second largestg eigenvalue of the adjacency matrix). Try:
+#lam2(Gnd(10,3));
+lam2:=proc(G) local A,x,d,S,i:
+A:=AM(G):
+S:={seq(add(A[i]),i=1..nops(A))}:
+
+if nops(S)<>1 then
+  RETURN(FAIL):
+fi:
+
+d:=S[1]:
+
+[d,fsolve(charpoly(A,x))[-2]]:
+end:
+#Vk(k): The list of all 0-1 vectors of length k in lex order. Try:
+#Vk(5);
+Vk:=proc(k) local S,i:
+option remember:
+if k=0 then
+RETURN([[]]):
+fi:
+S:=Vk(k-1):
+[seq([0, op(S[i])], i=1..nops(S)),seq([1, op(S[i])], i=1..nops(S))]:
+
+end:
+
+#HD1(v): inputs a 0-1 vector and outputs all the vectors where exactly one bit is changed. Try:
+#HD1([1,0,1]);
+HD1:=proc(v) local k,i:
+k:=nops(v):
+if {op(v)} minus {0,1}<>{} then
+   RETURN(FAIL):
+fi:
+{seq([op(1..i-1,v), 1-v[i]  , op(i+1..k,v)], i=1..k)}:
+end:
+
+#Ck(k): the k-dim unit cube as a graph in our format. Try:
+#Ck(3);
+Ck:=proc(k) local V,E,i,v:
+V:=Vk(k):
+#E is the set of edges {v,n} where n is a member of HD1(v)
+E:={seq(seq({V[i],v},v in HD1(V[i])),i=1..nops(V))}:
+E:=subs({seq(V[i]=i,i=1..nops(V))},E):
+[nops(V),E]:
+end:
+#end from C9.txt
+
+#start from C11.txt
+
+#Mul(A,B): the product of matrix A and B (assuming that it exists). Try:
+#Mul([[a1,a2]],[[b1],[b2]]);
+Mul:=proc(A,B) local i,j,k,n:
+[seq([seq(add(A[i][k]*B[k][j],k=1..nops(A[i])),j=1..nops(B[1]))],i=1..nops(A))]:
+end:
+
+
+
+#MaxNN(G,H): inputs a graph G=[n,E] and a subset H of {1, ..., n} outputs the
+#maximum number of neigbors a member that belong to H over all members of H 
+MaxNN:=proc(G,H) local L,i:
+L:=Neis(G):
+max(seq(nops(L[i] intersect H),  i in  H)):
+end:
+
+# MinMaxNN(G,r): minimum of MaxNN(G,H) over all subsets H of [n] with size r. more memory-efficient way 
+#suggested by Pablo Blacno (after discussions with Auora Hiveley)
+MinMaxNN:=proc(G,r) local n,c,mini,curr:
+ n:=G[1]:
+ c:=firstcomb(n,r):  
+ mini:=MaxNN(G,c):   # check {1,..,r} first
+
+ while nextcomb(c,n)<>FAIL do:   # check all other r-subsets of [n] and update the minimum if they are better
+  c:=nextcomb(c,n):
+  curr:=MaxNN(G,c):
+  if curr < mini then:
+   mini:=curr:
+  fi:
+ od:
+
+ mini:
+end:
+
+#An(n): the 2^n by 2^n matrix (given as a list of lists) in Knuth's writeup of Huang's proof. Try:
+#An(4);
+An:=proc(n) local A,i:
+option remember:
+if n=0 then
+ RETURN([[0]]):
+fi:
+A:=An(n-1):
+[
+seq([op(A[i]),0$(i-1),1,0$(nops(A[i])-i)],i=1..nops(A)),
+seq ([0$(i-1),1,0$(nops(A[i])-i), op(-A[i])],i=1..nops(A))
+]:
+end:
+
+#Bn(n): the 2^(n-1) by 2^n matrix in the paper
+Bn:=proc(n) local A,i:
+A:=An(n-1):
+[
+seq(A[i]+ [0$(i-1),sqrt(n),0$(nops(A[i])-i)],i=1..nops(A)),
+seq([0$(i-1),1,0$(nops(A[i])-i)],i=1..nops(A))
+]:
+end:
+
+#end from C11.txt
+
+
+#start from C12.txt
+
+#C12.txt, March 3, 2025 continuing Hao Huang's proof (according to Knuth)
+
+#Verify1(n): checks that An(n) times Bn(n)=sqrt(n)*Bn(n) in Hao Huang's proof (Knuth's version). Try:
+#Verify1(5);
+Verify1:=proc(n)
+evalb(Mul(An(n), Bn(n))=expand(sqrt(n)*Bn(n))):
+end:
+
+#Findy(n,H): inputs a pos. integer n and a subset H with exacty 2^(n-1)+1 elements
+#and outputs the vector y promised in Hao Wang's proof. Try:
+#Findy(3,{1,2,3,4,5});
+Findy:=proc(n,H) local A,B,Hc,i,X,var,j,Xn,Y,var1,v,i1,x:
+A:=An(n): B:=Bn(n):
+if nops(H)<>2^(n-1)+1 then
+ print(` The set`, H, `should have `, 2^(n-1)+1, ` members `):
+ RETURN(FAIL):
+fi:
+Hc:={seq(i,i=1..2^n)} minus H:
+X:=[seq(x[i],i=1..2^(n-1))]:
+var:={seq(x[i],i=1..2^(n-1))}:
+var:=solve({seq(add(B[i][j]*x[j],j=1..2^(n-1)),i in Hc)},var):
+X:=subs(var,X):
+#var1 is the set of free variables
+var1:={}:
+for v in var do
+ if op(1,v)=op(2,v) then
+    var1:=var1 union {op(1,v)}:
+ fi:
+od:
+
+X:=subs({var1[1]=1,seq(var1[i1]=0,i1=2..nops(var1))},X):
+
+Xn:=simplify(sqrt(add(X[i]^2,i=1..nops(X))),symbolic):
+X:=expand(X/Xn):
+Y:=[seq(add(B[i][j]*X[j],j=1..2^(n-1)),i=1..nops(B))]:
+if {seq(simplify(add(A[i][j]*Y[j],j=1..nops(Y))-sqrt(n)*Y[i],symbolic),i=1..nops(A))}<>{0} then
+ print(`Either Huang messed up or Knuth, or more likely we `):
+ RETURN(FAIL):
+fi:
+Y:
+end:
+
+#LuckyVertex(n,H): inputs  pos. integer n and a subset H of size 2^(n-1)+1 outputs a member
+#that is guaranteed to have at least sqrt(n) neighbors in H. Try:
+#LuckyVertex(3,{1,3,4,5,6});
+LuckyVertex:=proc(n,H) local Y,i:
+Y:=Findy(n,H):
+max[index]([seq(abs(Y[i]),i=1..nops(Y))]):
+end:
+
+#End from C12.txt
+
+
+#start from C18.txt
+
+#C18.txt: March 31, 2025 Graph algithms
+
+#RWG(n,p,K): inputs a pos. integer n and outputs a triple [n,E,DT]
+#where the vertices are {1,...,n} the edges are of the form {i,j} and
+#DT is table such DT[{i,j}] is the weight of the edge {i,j}
+RWG:=proc(n,p,K) local G,DT,e,ra,E:
+ra:=rand(1..K):
+
+G:=RG(n,p):
+E:=G[2]:
+for e in E do
+DT[e]:=ra():
+od:
+[n,E,op(DT)]:
+end:
+
+
+#Dij(G,a): inputs a weighted graph G=[n,E,DT] and a starting 
+#vertex a outputs a, list L of length n such that L[i] is the MINIMAL DISTANCE
+#min. distance
+#from a to i. In particular L[a]=0. Try:
+#G:=RWG(10,1/2,10); Dij(G,5);
+Dij:=proc(G,a) local n,E,DT,Nei,e,i,Uvis,Tt,T,Vis,cu,Nei1,v,cha,rec,i1:
+n:=G[1]:
+E:=G[2]:
+DT:=G[3]:
+#Nei is a table of length n such that N[i] is the set of VERTICES j such that {i,j} belongs to E
+for i from 1 to n do
+ Nei[i]:={}:
+od:
+for e in E do
+ Nei[e[1]]:=Nei[e[1]] union {e[2]}:
+ Nei[e[2]]:=Nei[e[2]] union {e[1]}:
+od:
+ 
+#Uvis is he currently set of still unvisoted vertices
+Uvis:={seq(i,i=1..n)}:
+#T[i] is the permanent label (the min. distance from a to i
+#Tt[i]: is the current best upper bound
+for i from 1 to n do
+ Tt[i]:=infinity:
+od:
+
+
+T[a]:=0:
+Uvis:=Uvis minus {a}:
+Vis:=[a]:
+
+while Uvis<>{} do
+cu:=Vis[nops(Vis)]:
+Nei1:=Nei[cu]:
+
+for v in Nei1 do
+if T[cu]+DT[{cu,v}]<Tt[v] then
+ Tt[v]:=T[cu]+DT[{cu,v}]:
+fi:
+od:
+
+cha:=Uvis[1]:
+rec:=Tt[cha]:
+for i1 from 2 to nops(Uvis) do
+  if Tt[Uvis[i1]]<rec then
+     cha:=Uvis[i1]:
+     rec:=Tt[cha]:
+  fi:
+od:
+T[cha]:=Tt[cha]:
+Vis:=[op(Vis), cha]:
+
+Uvis:=Uvis minus {cha}:
+od:
+[seq(T[i],i=1..n)]:
+end:
+
+#DijP(G,a): inputs a weighted graph G=[n,E,DT] and outputs and a starting 
+#vertex a outputs a list L of length n such that L[i] is the MINIMAL DISTANCE
+#it also returns a list P such that P[i] is the path from a to i that realizes the
+#min. distance
+#from a to i. In particular L[a]=0
+DijP:=proc(G,a) local n,E,DT,Nei,e,i,Uvis,Tt,T,Vis,cu,Nei1,v,cha,rec,i1,Paths, TempPaths:
+n:=G[1]:
+E:=G[2]:
+DT:=G[3]:
+#N is a table of length n such that N[i] is the set of VERTICES j such that {i,j} belongs to E
+for i from 1 to n do
+ Nei[i]:={}:
+od:
+for e in E do
+ Nei[e[1]]:=Nei[e[1]] union {e[2]}:
+ Nei[e[2]]:=Nei[e[2]] union {e[1]}:
+od:
+ 
+#Uvis is he currently set of still unvisoted vertices
+Uvis:={seq(i,i=1..n)}:
+#T[i] is the permanent label (the min. distance from a to i
+#Tt[i]: is the current best upper bound
+for i from 1 to n do
+ Tt[i]:=infinity:
+od:
+
+Paths[a]:=[a]:
+
+T[a]:=0:
+Uvis:=Uvis minus {a}:
+Vis:=[a]:
+
+while Uvis<>{} do
+cu:=Vis[nops(Vis)]:
+Nei1:=Nei[cu]:
+
+for v in Nei1 do
+if T[cu]+DT[{cu,v}]<Tt[v] then
+ Tt[v]:=T[cu]+DT[{cu,v}]:
+ TempPaths[v]:=[op(Paths[cu]),v]:
+fi:
+od:
+
+cha:=Uvis[1]:
+rec:=Tt[cha]:
+for i1 from 2 to nops(Uvis) do
+  if Tt[Uvis[i1]]<rec then
+     cha:=Uvis[i1]:
+     rec:=Tt[cha]:
+  fi:
+od:
+T[cha]:=Tt[cha]:
+Vis:=[op(Vis), cha]:
+Paths[cha]:=TempPaths[cha]:
+
+Uvis:=Uvis minus {cha}:
+od:
+[seq(T[i],i=1..n)], [seq(Paths[i],i=1..n)]:
+end:
+
+#end from C18.txt
+
+
+#start from C20.txt
+#MST1(G,partT,AvE): inputs a weighted graph G and performs ONE step in the Kruskal
+#algoritm by looking at the cheapest member of AvE and trying to join it to
+#partT if it does NOT create a cycle, either way we remove it from AvE
+MST1:=proc(G,partT,AvE) local n, E,DT,e,AvE1,AvE1d,i1:
+n:=G[1]:
+E:=G[2]:
+DT:=G[3]:
+
+if partT minus E<>{} or AvE minus E<>{} then
+ RETURN(FAIL):
+fi:
+AvE1:=convert(AvE,list):
+AvE1d:=[seq(DT[AvE1[i1]],i1=1..nops(AvE1))]:
+#e is the cheapest edge
+e:=AvE1[min[index](AvE1d)]:
+if member(e[2],CC([n,partT],e[1])) then
+   RETURN(G,partT,AvE minus {e}):
+else
+RETURN(G,partT union {e} ,AvE minus {e}):
+fi:
+
+end:
+
+#MST(G): the minimal spanning tree of the weighted graph G=[n,E,DT]
+#and the its cost (the sum of the costs of the edges of the cheapest tree). Try:
+#G:=RWG(10,1/2,10); MST(G);
+MST:=proc(G) local n,E,A,i,DT,e:
+
+n:=G[1]:
+E:=G[2]:
+DT:=G[3]:
+if not CC([n,E],1)={seq(i,i=1..n)} then
+ print(`not connected`):
+ RETURN(FAIL):
+fi:
+
+A:=G,{},E:
+while nops(A[2])<n-1 and E<>{}  do
+A:=MST1(A):
+od:
+[n,A[2]], add(DT[e], e in A[2]):
+end:
+
+#end from C20.txt
+
+#start from C23.txt
+
+#Def. a full binary tree is either a single vertex called the root,
+#or it has a root that has EXACTLY two children
+#T=*  or
+#      *
+#    T1  T2
+#T=[] or T=[T1,T2]
+#BT(1)={[]}; BT(2)={[[],[]]}: BT(3)={[[],[[],[]]], ...
+
+#BT(n): the SET of full binary trees with n leaves
+BT:=proc(n) local T1,T2,k,T,t1,t2:
+if n=1 then
+ RETURN({[]}):
+fi:
+#k is the number of leaves in the left child
+T:={}:
+for k from 1 to n-1 do
+ T1:=BT(k):
+  T2:=BT(n-k):
+ T:=T union {seq(seq( [ t1,t2   ]   , t1 in T1), t2 in T2)}:
+od:
+
+T:
+end:
+
+#SeqBT(N): the first N terms of the sequence enumerating the number of full binary trees with n leaves. Try:
+#SeqBT(20);
+SeqBT:=proc(N) local x,f,i:
+f:=x:
+for i from 1 to N do
+ f:=expand(x+f^2):
+f:=add(coeff(f,x,i)*x^i,i=1..N):
+od:
+[seq(coeff(f,x,i),i=1..N)]:
+end:
+
+#Images(T):Images(T)=[Images(T1),Images(T2)]
+Images:=proc(T) local T1,T2,t1,t2,S:
+if T=[] then
+ RETURN({[]}):
+fi:
+T1:=Images(T[1]):
+T2:=Images(T[2]):
+S:={}:
+for t1 in T1 do
+ for t2 in T2 do
+  S:=S union {[t1,t2],[t2,t1]}:
+ od:
+od:
+S:
+end:
+
+#UBT(n): the set of all unlabeled full binary trees (one reprentative each)
+UBT:=proc(n) local S1,S2,S3:
+S1:=BT(n):
+S2:={}:
+while S1<>{} do
+  S3:=Images(S1[1]):
+ S2:=S2 union {S1[1]}:
+  S1:=S1 minus S3:
+od:
+S2:
+end:
+
+#SeqUBT(N): the first N terms of the sequence enumerating the number of UNLABELED full binary trees with n leaves
+#gen. function satisfies the functional equation f(x)=x+(f(x)^2+f(x^2))/2
+SeqUBT:=proc(N) local x,f,i:
+f:=x:
+for i from 1 to N do
+ f:=expand(x+(f^2+subs(x=x^2,f))/2):
+f:=add(coeff(f,x,i)*x^i,i=1..N):
+od:
+[seq(coeff(f,x,i),i=1..N)]:
+end:
+#End from C23.txt
