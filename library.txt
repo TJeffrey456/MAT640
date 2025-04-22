@@ -1,0 +1,8 @@
+# this is where to add the new functions 
+
+read `support.txt`:
+
+# things to add find Hamilton if Dirac holds, Eulerian (check degrees), Chinese postman problem, perfect matching, coloring (Brooke's thm), find chromatic polynomial, TOPO SORT
+# Check if we can do anything fun with planarity
+# We should do smth with Max flow - min cut (Ford Fulkerson, Edmon-Karp)
+print(`The ADDITIONAL procedures are: `):A
