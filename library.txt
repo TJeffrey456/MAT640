@@ -5,4 +5,41 @@ read `support.txt`:
 # things to add find Hamilton if Dirac holds, Eulerian (check degrees), Chinese postman problem, perfect matching, coloring (Brooke's thm), find chromatic polynomial, TOPO SORT
 # Check if we can do anything fun with planarity
 # We should do smth with Max flow - min cut (Ford Fulkerson, Edmon-Karp)
-print(`The ADDITIONAL procedures are: `):A
+print(`The ADDITIONAL procedures are: `):
+
+# Given a graph G = [n,E], returns true if Dirac's Theorem holds true and false otherwise
+Dirac:=proc(G) local n,E,L,i,mindeg:
+    n := G[1]:
+    E := G[1]:
+    L := Degrees(G):
+
+    mindeg := infinity:
+
+    for i from 1 to n do
+        if (L[i] < mindeg) then
+            mindeg := L[i]:
+        fi:
+    od:
+
+    if mindeg >= n/2 then
+        RETURN(true):
+    else
+        RETURN(false):
+    fi:
+end:
+
+# Given a graph G = [n,E], returns the list of degrees for each vertex
+Degrees:=proc(G) local n,E,e,L:
+    n := G[1]:
+    E := G[2]:
+
+    L := [seq(0, 1..n)]:
+
+    # Iterates over the edges and increments the corresponding degrees
+    for e in E do
+        L[e[1]] := L[e[1]] + 1:
+        L[e[2]] := L[e[2]] + 1:
+    od:
+
+    RETURN(L):
+end:
