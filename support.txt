@@ -2,7 +2,7 @@
 
 
 # add BFS, DFS, 
-print(`These are the SUPPORTING procedures we added after instruction: Degrees`):
+print(`These are the SUPPORTING procedures we added after instruction: Degrees(G), BFS(G,u)`):
 
 
 # Given a graph G = [n,E], returns the list of degrees for each vertex
@@ -24,5 +24,5 @@ end:
 # Given a graph G = [n,E] and a vertex u, runs BFS on G starting from u
 # Returns ...
 BFS:=proc(G,u) local visited:
-
+    
 end:

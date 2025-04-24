@@ -27,3 +27,61 @@ Dirac:=proc(G) local n,E,L,i,mindeg:
         RETURN(false):
     fi:
 end:
+
+# isHamiltonian(G), determines if a Graph is Hamiltonian, find a Hamiltonian path if Dirac's Thm holds 
+isHamiltonian:=proc(G) local DiracHolds :
+    DiracHolds := Dirac(G):
+    if DiracHolds then
+        # find the path this will be exponential - NP Hard
+
+    else
+        RETURN(FAIL, "Dirac's Theorem does not hold!")
+    fi:
+
+# isEulerian(G) determines if a graph is Eulerian, return Eulerian circuit if true
+isEulerian:= proc(G) local degList:
+    n = G[1]:
+    E = G[2]:
+    degList := Degrees(G)
+    for i in n do
+        if degList[i] mod 2 <> 0 then 
+            RETURN(FAIL, "G has a vertex of odd degree!")
+        fi:
+    od:
+    # so its Eulerian, find the circuit
+
+    # Step 2: Check that the graph is connected
+    CCset := CC([n, E], 1):
+    if {seq(i, i=1..n)} minus CCset <> {} then
+        RETURN(FAIL, "Graph is not connected"):
+    fi:
+    
+    # Hierholzer's algorithm for Eulerian path (simpler than Fleury’s)
+    VisitedE := {}:
+    trail := []:
+    stack := [1]:  # Start from vertex 1 (arbitrary, since it's Eulerian)
+    neighbors := table():
+    
+    for i from 1 to n do
+        neighbors[i] := {}:
+    od:
+    for e in E do
+        neighbors[e[1]] := neighbors[e[1]] union {[e[1], e[2]]}:
+        neighbors[e[2]] := neighbors[e[2]] union {[e[2], e[1]]}:
+    od:
+    
+    while nops(stack) > 0 do
+        cur := stack[-1]:
+        if neighbors[cur] = {} then
+            trail := [op(trail), cur]:
+            stack := stack[1..-2]:
+        else
+            next := op(1, neighbors[cur]):
+            neighbors[cur] := neighbors[cur] minus {next}:
+            neighbors[next[2]] := neighbors[next[2]] minus {[next[2], next[1]]}:
+            stack := [op(stack), next[2]]:
+        fi:
+    od:
+    
+    trail:
+end:

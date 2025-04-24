@@ -183,7 +183,7 @@ print(`Neis([3,{{1,2},{1,3}}]);`):
 
 
 elif nargs=1 and args[1]=NuST then
-print(`NuST(G): The number of spanning trees of G (using the Matrix Tree Therorem. Try:`):
+print(`NuST(G): The number of spanning trees of G (using the Matrix Tree Therorem. Try:`)):
 print(`NuST([4,{{1,2},{1,3},{2,3},{1,4},{2,4},{3,4}}]);`):
 
 elif nargs=1 and args[1]=NuCGclever then
@@ -781,7 +781,7 @@ od:
  
 #Uvis is he currently set of still unvisoted vertices
 Uvis:={seq(i,i=1..n)}:
-#T[i] is the permanent label (the min. distance from a to i
+#T[i] is the permanent label (the min. distance from a to i)
 #Tt[i]: is the current best upper bound
 for i from 1 to n do
  Tt[i]:=infinity:
