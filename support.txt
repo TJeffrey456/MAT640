@@ -26,3 +26,25 @@ end:
 BFS:=proc(G,u) local visited:
     
 end:
+
+# Backtracking function to find a Hamiltonian path
+FindPath := proc(currentPath, remainingNodes) local currentNode, current_neighbors, neighbor, newRemaining, newPath, result;
+    if nops(currentPath) = n then
+        return currentPath; # Hamiltonian path found
+    fi:
+
+    currentNode := currentPath[-1]:
+    current_neighbors := neighbors_list[currentNode];
+
+    for neighbor in current_neighbors do
+        if neighbor in remainingNodes then
+            newRemaining := remainingNodes minus {neighbor};
+            newPath := [op(currentPath), neighbor];
+            result := FindPath(newPath, newRemaining);
+            if result <> FAIL then
+                return true, result;
+            fi:
+        fi:
+    od:
+    return FAIL:
+end:

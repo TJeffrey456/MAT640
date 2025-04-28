@@ -2,7 +2,7 @@
 
 read `support.txt`:
 
-# things to add find Hamilton if Dirac holds, Eulerian (check degrees), Chinese postman problem, perfect matching, coloring (Brooke's thm), find chromatic polynomial, TOPO SORT
+# things to add find Hamilton if Dirac holds, Eulerian (check degrees), Chinese postman problem, perfect matching, coloring (Brooke's thm), find chromatic polynomial
 # Check if we can do anything fun with planarity
 # We should do smth with Max flow - min cut (Ford Fulkerson, Edmon-Karp)
 print(`The ADDITIONAL procedures are: `):
@@ -29,11 +29,25 @@ Dirac:=proc(G) local n,E,L,i,mindeg:
 end:
 
 # isHamiltonian(G), determines if a Graph is Hamiltonian, find a Hamiltonian path if Dirac's Thm holds 
-isHamiltonian:=proc(G) local DiracHolds :
+isHamiltonian:=proc(G) local DiracHolds, neighbors_list, i, minDegree, vertices, startNode, path:
     DiracHolds := Dirac(G):
     if DiracHolds then
         # find the path this will be exponential - NP Hard
+        neighbors_list := Neis(graph);
 
+        minDegree := infinity;
+        for i from 1 to n do
+            minDegree := min(minDegree, nops(neighbors_list[i]));
+        od:
+
+        vertices := convert({seq(i, i=1..n)}, list);
+
+        # Try starting the search from each vertex
+        for startNode in vertices do
+            path := FindPath([startNode], convert(vertices minus {startNode}, set));
+            if path <> FAIL then
+                return path;
+            fi:
     else
         RETURN(FAIL, "Dirac's Theorem does not hold!")
     fi:
@@ -84,4 +98,54 @@ isEulerian:= proc(G) local degList:
     od:
     
     trail:
+end:
+
+
+# Finding the chromatic polynomial of a graph using Deletion-contraction algorithm
+ChromaticPolynomial := proc(G) local n, E, edge, G_minus_e, G_contracted_e, v1, v2, remaining_vertices, contracted_vertices, new_edges, neighbor;
+option remember; # this is for Memoization
+
+    n := G[1];
+    E := G[2];
+
+    # Base Cases
+    # Empty
+    if E = {} then
+        return k^n;
+    fi:
+    # NULL
+    if n = 0 then
+        return 1; 
+    fi:
+
+    # Choose an edge (since we know its not empty, choose the first one)
+    edge := E[1];
+    v1 := edge[1];
+    v2 := edge[2];
+
+    # Delete
+    G_minus_e := [n, E minus {edge}];
+
+    # contracted
+    remaining_vertices := {seq(i, i=1..n)} minus {v1, v2};
+    contracted_vertices := [v1_v2]; # Represent the merged vertex
+    new_edges := {};
+
+    # Add edges from remaining vertices to the contracted vertex
+    for neighbor in Neis(G)[v1] union Neis(G)[v2] do
+        if neighbor in remaining_vertices then
+            new_edges := new_edges union {{v1_v2, neighbor}};
+        fi:
+    od:
+
+    # Add edges between the remaining vertices (that were not incident to e)
+    for current_edge in E minus {edge} do
+        if current_edge[1] in remaining_vertices and current_edge[2] in remaining_vertices then
+            new_edges := new_edges union {current_edge};
+        fi:
+    od:
+
+    G_contracted_e := [n - 1, new_edges]:
+
+    return ChromaticPolynomial(G_minus_e) - ChromaticPolynomial(subs(v1_v2 = k, G_contracted_e));
 end:
