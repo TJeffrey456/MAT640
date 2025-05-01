@@ -1,14 +1,19 @@
 # this is where to add the new functions 
-
+read `AGT.txt`:
 read `support.txt`:
 
 # things to add find Hamilton if Dirac holds, Eulerian (check degrees), Chinese postman problem, perfect matching, coloring (Brooke's thm), find chromatic polynomial
 # Check if we can do anything fun with planarity
 # We should do smth with Max flow - min cut (Ford Fulkerson, Edmon-Karp)
-print(`The ADDITIONAL procedures are: `):
+Helpnew:=proc():
+    print(`The ADDITIONAL procedures (added by Jeffrey Tang and Matthew Esaia) are: Dirac(G), isHamiltonian(G), isEulerian(G), ChromaticPolynomial(G)`):
+end:
+Helpnew():
+print(`To access the list of newly added main procedures again, type "Helpnew()"`):
+
 
 # Given a graph G = [n,E], returns true if Dirac's Theorem holds true and false otherwise
-Dirac:=proc(G) local n,E,L,i,mindeg:
+DiracThm:=proc(G) local n,E,L,i,mindeg:
     n := G[1]:
     E := G[1]:
     L := Degrees(G):
@@ -27,10 +32,9 @@ Dirac:=proc(G) local n,E,L,i,mindeg:
         RETURN(false):
     fi:
 end:
-
 # isHamiltonian(G), determines if a Graph is Hamiltonian, find a Hamiltonian path if Dirac's Thm holds 
 isHamiltonian:=proc(G) local DiracHolds, neighbors_list, i, minDegree, vertices, startNode, path:
-    DiracHolds := Dirac(G):
+    DiracHolds := DiracThm(G):
     if DiracHolds then
         # find the path this will be exponential - NP Hard
         neighbors_list := Neis(graph);
@@ -48,15 +52,17 @@ isHamiltonian:=proc(G) local DiracHolds, neighbors_list, i, minDegree, vertices,
             if path <> FAIL then
                 return path;
             fi:
+        od:
     else
         RETURN(FAIL, "Dirac's Theorem does not hold!")
     fi:
+end:
 
 # isEulerian(G) determines if a graph is Eulerian, return Eulerian circuit if true
-isEulerian:= proc(G) local degList:
+isEulerian:= proc(G) local degList, VisitedE, CCset, trail, stack, neighbors, nextV, i, e, curr:
     n = G[1]:
     E = G[2]:
-    degList := Degrees(G)
+    degList := Degrees(G):
     for i in n do
         if degList[i] mod 2 <> 0 then 
             RETURN(FAIL, "G has a vertex of odd degree!")
@@ -85,15 +91,15 @@ isEulerian:= proc(G) local degList:
     od:
     
     while nops(stack) > 0 do
-        cur := stack[-1]:
-        if neighbors[cur] = {} then
-            trail := [op(trail), cur]:
+        curr := stack[-1]:
+        if neighbors[curr] = {} then
+            trail := [op(trail), curr]:
             stack := stack[1..-2]:
         else
-            next := op(1, neighbors[cur]):
-            neighbors[cur] := neighbors[cur] minus {next}:
-            neighbors[next[2]] := neighbors[next[2]] minus {[next[2], next[1]]}:
-            stack := [op(stack), next[2]]:
+            nextV := op(1, neighbors[curr]):
+            neighbors[curr] := neighbors[curr] minus {nextV}:
+            neighbors[nextV[2]] := neighbors[nextV[2]] minus {[nextV[2], nextV[1]]}:
+            stack := [op(stack), nextV[2]]:
         fi:
     od:
     
@@ -102,7 +108,7 @@ end:
 
 
 # Finding the chromatic polynomial of a graph using Deletion-contraction algorithm
-ChromaticPolynomial := proc(G) local n, E, edge, G_minus_e, G_contracted_e, v1, v2, remaining_vertices, contracted_vertices, new_edges, neighbor;
+ChromaticPolynomial := proc(G) local n, E, edge, G_minus_e, G_contracted_e, v1, v2, remaining_vertices, contracted_vertices, new_edges, neighbor, i, curr_e;
 option remember; # this is for Memoization
 
     n := G[1];
@@ -139,9 +145,9 @@ option remember; # this is for Memoization
     od:
 
     # Add edges between the remaining vertices (that were not incident to e)
-    for current_edge in E minus {edge} do
-        if current_edge[1] in remaining_vertices and current_edge[2] in remaining_vertices then
-            new_edges := new_edges union {current_edge};
+    for curr_e in E minus {edge} do
+        if curr_e[1] in remaining_vertices and curr_e[2] in remaining_vertices then
+            new_edges := new_edges union {curr_e};
         fi:
     od:
 

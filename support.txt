@@ -1,12 +1,14 @@
 # this is where to add support functions
 
 
-# add BFS, DFS, 
-print(`These are the SUPPORTING procedures we added after instruction: Degrees(G), BFS(G,u)`):
-
+Helpsupport:=proc()
+    print(`These are the SUPPORTING procedures we added after instruction: DegreeList(G), BFS(G,u)`):
+end:
+Helpsupport():
+print(`To access the list of newly added support procedures again, type "Helpsupport()"`):
 
 # Given a graph G = [n,E], returns the list of degrees for each vertex
-Degrees:=proc(G) local n,E,e,L:
+DegreeList := proc(G) local n,E,e,L:
     n := G[1]:
     E := G[2]:
 

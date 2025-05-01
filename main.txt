@@ -1,7 +1,5 @@
 # this is the file to read because AGT.txt is continuously being developed in class and library and support.txt are separate files
 
-read `AGT.txt`:
 read `library.txt`:
-read `support.txt`:
 
 
