@@ -38,6 +38,7 @@ BFS:=proc(G,s,t) local n,visited,queue,parent,u,v:
 
     while queue <> {} do
         u := queue[1]:
+        queue := queue minus {u}:
 
         for v from 1 to n do
             if (visited[v] = 0 and G[u][v] > 0) then

@@ -157,15 +157,43 @@ option remember; # this is for Memoization
 end:
 
 # Finds the max flow from s to t given a weighted adjacency matrix G
-FordFulkerson:=proc(G, s, t) local u,v,residual_G,n,max_flow:
+FordFulkerson:=proc(G, s, t) local u,v,residual_G,n,parent,max_flow,path_flow,i,j:
     n := nops(G):
     residual_G := [seq([seq(0, j=1..n)], i=1..n)]:
 
-    for (u from 1 to n) do
-        for (v from 1 to n) do
+    for u from 1 to n do
+        for v from 1 to n do
             residual_G[u][v] := G[u][v]:
         od:
     od:
 
+    parent := BFS(residual_G,s,t):
     max_flow := 0:
+
+    while parent <> false do
+        printf(max_flow):
+        path_flow := infinity:
+
+        v := t:
+        while v <> s do
+            u = parent[v];
+            path_flow = min(path_flow, residual_G[u][v]);
+            v := parent[v];
+        od:
+
+        v := t:
+        while v <> s do
+            u = parent[v];
+            residual_G[u][v] -= path_flow;
+            residual_G[v][u] += path_flow;
+
+            v := parent[v]:
+        od:
+
+        max_flow += path_flow:
+
+        parent := BFS(residual_G,s,t):
+    od:
+
+    RETURN(max_flow):
 end:
