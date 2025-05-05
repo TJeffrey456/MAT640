@@ -2,7 +2,7 @@
 
 
 Helpsupport:=proc()
-    print(`These are the SUPPORTING procedures we added after instruction: DegreeList(G), BFS(G,u)`):
+    print(`These are the SUPPORTING procedures we added after instruction: DegreeList(G), BFS(G,s,t)`):
 end:
 Helpsupport():
 print(`To access the list of newly added support procedures again, type "Helpsupport()"`):
@@ -23,10 +23,37 @@ DegreeList := proc(G) local n,E,e,L:
     RETURN(L):
 end:
 
-# Given a graph G = [n,E] and a vertex u, runs BFS on G starting from u
-# Returns ...
-BFS:=proc(G,u) local visited:
-    
+# Given a graph G = weighted adjacency matrix and vertices s and t, runs BFS on G starting from s
+# Returns parent[] to store the if there is a path from s to t
+# Otherwise, returns false
+BFS:=proc(G,s,t) local n,visited,queue,parent,u,v:
+    n := nops(G):
+
+    visited := [seq(0$n)]:
+    parent := [seq(0$n)]:
+
+    queue := {s}:
+    visited[s] := 1:
+    parent[s] := -1:
+
+    while queue <> {} do
+        u := queue[1]:
+
+        for v from 1 to n do
+            if (visited[v] = 0 and G[u][v] > 0) then
+                if (v = t) then
+                    parent[v] := u:
+                    RETURN(parent):
+                fi:
+
+                queue := queue union {v}:
+                parent[v] := u:
+                visited[v] := 1:
+            fi:
+        od:
+    od:
+
+    RETURN(false):
 end:
 
 # Backtracking function to find a Hamiltonian path

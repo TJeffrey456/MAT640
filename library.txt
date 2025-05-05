@@ -155,3 +155,17 @@ option remember; # this is for Memoization
 
     return ChromaticPolynomial(G_minus_e) - ChromaticPolynomial(subs(v1_v2 = k, G_contracted_e));
 end:
+
+# Finds the max flow from s to t given a weighted adjacency matrix G
+FordFulkerson:=proc(G, s, t) local u,v,residual_G,n,max_flow:
+    n := nops(G):
+    residual_G := [seq([seq(0, j=1..n)], i=1..n)]:
+
+    for (u from 1 to n) do
+        for (v from 1 to n) do
+            residual_G[u][v] := G[u][v]:
+        od:
+    od:
+
+    max_flow := 0:
+end:
