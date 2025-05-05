@@ -6,7 +6,7 @@ read `support.txt`:
 # Check if we can do anything fun with planarity
 # We should do smth with Max flow - min cut (Ford Fulkerson, Edmon-Karp)
 Helpnew:=proc():
-    print(`The ADDITIONAL procedures (added by Jeffrey Tang and Matthew Esaia) are: Dirac(G), isHamiltonian(G), isEulerian(G), ChromaticPolynomial(G)`):
+    print(`The ADDITIONAL procedures (added by Jeffrey Tang and Matthew Esaia) are: DiracThm(G), isHamiltonian(G), isEulerian(G), ChromaticPolynomial(G), FordFulkerson(G,s,t), PerfectMatching(G), ColorGraph(G)`):
 end:
 Helpnew():
 print(`To access the list of newly added main procedures again, type "Helpnew()"`):
@@ -32,6 +32,7 @@ DiracThm:=proc(G) local n,E,L,i,mindeg:
         RETURN(false):
     fi:
 end:
+
 # isHamiltonian(G), determines if a Graph is Hamiltonian, find a Hamiltonian path if Dirac's Thm holds 
 isHamiltonian:=proc(G) local DiracHolds, neighbors_list, i, minDegree, vertices, startNode, path:
     DiracHolds := DiracThm(G):
@@ -110,7 +111,6 @@ end:
 # Finding the chromatic polynomial of a graph using Deletion-contraction algorithm
 ChromaticPolynomial := proc(G) local n, E, edge, G_minus_e, G_contracted_e, v1, v2, remaining_vertices, contracted_vertices, new_edges, neighbor, i, curr_e;
 option remember; # this is for Memoization
-
     n := G[1];
     E := G[2];
 
@@ -156,6 +156,7 @@ option remember; # this is for Memoization
     return ChromaticPolynomial(G_minus_e) - ChromaticPolynomial(subs(v1_v2 = k, G_contracted_e));
 end:
 
+
 # Finds the max flow from s to t given a weighted adjacency matrix G
 FordFulkerson:=proc(G, s, t) local u,v,residual_G,n,parent,max_flow,path_flow,i,j:
     n := nops(G):
@@ -196,4 +197,64 @@ FordFulkerson:=proc(G, s, t) local u,v,residual_G,n,parent,max_flow,path_flow,i,
     od:
 
     RETURN(max_flow):
+end:
+
+# Perfect Matching: Given a graph, it will return a perfect matching
+PerfectMatching := proc(G)  local matched, match, used, u, v, i, e:
+  n = G[1]:
+  E = G[2]:
+  
+  matched := {}:
+  used := Array(1..n, fill = false):
+  for e in E do
+    u=e[1]:
+    v=e[2]:
+    if not used[u] and not used[v] then
+      matched := matched union {[u, v]}:
+      used[u] := true; 
+      used[v] := true:
+    fi:
+  od:
+  
+  matched:
+end:
+
+# Finding the chromatic number of a graph using Brooke's Thm as an upper limit, returns the color
+# assignment and the total number of colors used
+ColorGraph := proc(G) local color, e, i, neighbors, u, c, usedColors, maxColor, n, E:
+  n = G[1]:
+  E = G[2]:
+  color := Array(1..n, fill = 0):
+  maxColor := 0:
+
+  for i from 1 to n do
+    neighbors := {}:
+    # get the neighbors of vertex i
+    for e in E do
+      if e[1] = i then
+          neighbors := neighbors union {e[2]}:
+      elif e[2] = i then
+          neighbors := neighbors union {e[1]}:
+      fi:
+    od:
+
+    usedColors := {}:
+    for u in neighbors do
+      if color[u] <> 0 then
+          usedColors := usedColors union {color[u]}:
+      fi:
+    od:
+
+    c := 1;
+    while member(c, usedColors) do
+      c := c + 1:
+    od:
+
+    color[v] := c;
+    if c > maxColor then
+        maxColor := c;
+    fi:
+  od:
+
+  [color, maxColor]:
 end:
