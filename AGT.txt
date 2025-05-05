@@ -15,7 +15,7 @@ with(linalg):
 print(`First Written: March-May tested for Maple 2024 `):
 print(`UNDER CONSTRUCTION`):
 
-print(`Version  : April 6, 2025  `):
+print(`Version  : May 4, 2025  `):
 print():
 print(`Written by the Experimental Mathematics class taught by Dr. Z. (Doron Zeilberger), Rutgers University , Spring 2025`):
 
@@ -30,13 +30,18 @@ print(`For general help, and a list of the MAIN functions,`):
 print(` type "Help();". For specific help type "Help(procedure_name);" `):
 print(`For a list of the supporting functions type: Help1();`):
 print():
+ 
+
 
 
 Help1:=proc()
 if args=NULL then
 
-print(`The SUPPORTING procedures are: BT, CC, Cliques, Comp, EstimateAverageClique,  Findy, Gnd, HD1, IsCo, lam2, LC, MaxNN, MST1, MST. NuST, Neis, STbf, TotTri, Tri, UBT, Verify1, Vk`):
+print(`The SUPPORTING procedures are: BT, CC, Cliques, Comp, CtoP, EC, EstimateAverageClique,  Findy, `):
+print(`IndPer, GenGp, GFperiodPer, Gnd, HD1, IsCo, lam2, LC, MaxNN, MST1, MST. Mult, MultP, NuST, Neis, Pars1, ParToPer, PtoC,`):
+print(`RF, STbf, TotTri, Tri, UBT, Verify1, Vk, WtP `):
 print(` `):
+
 else
 Help(args):
 
@@ -50,8 +55,12 @@ if args=NULL then
 
 print(` : A Maple package for performing algorithms in graph theory  (under construction) `):
 
-print(`The MAIN procedures are: AM, An,Bn, AntiPC, Ck, Dij, DijP, Graphs, LuckyVertex, MinMaxNN, Mul, MST, NuCGc, PC, RG, RWG, SeqBT, SeqUBT  `):
+print(`The MAIN procedures are: AM, An,Bn, AntiPC, CIP, CIPkn, CIPknC, CIPsn, Ck, Dij, DijP, EstimateGFperiod,  FibMod, FindPer, GFperiod, Graphs, LkT, LkUT, LuckyVertex, MinMaxNN, Mul, MST, NuCGc, NuULGe, PC, RG, RWG, SeqBT, SeqUBT  `):
 print(`  `):
+
+elif nargs=1 and args[1]=AllF then
+print(`AllF(m,n): all lists of length n with entries from {1,..,m}. Try:`):
+print(`AllF(2,5);`):
 
 elif nargs=1 and args[1]=AM then
 print(` AM(G): inputs a graph [n,E] and outputs the adjacency matrix, represented as a list of length n of lists of length n,`):
@@ -78,6 +87,24 @@ elif nargs=1 and args[1]=CC then
 print(`CC(G,i): The connected component in the graph G where  vertex i belongs. Try:`):
 print(`CC([5,{{1,2},{1,3},{4,5}}],1);`):
 
+elif nargs=1 and args[1]=CIP then
+print(`CIP(G,x): The Polya cycle-index polynomial of the gp G of permutations of length n. Try: `):
+print(`CIP({[1,2,3],[2,1,3]},x);`):
+print(`CIP(permute(5),x);`):
+
+elif nargs=1 and args[1]=CIPkn then
+print(`CIPkn(n,x): the cycle-index polynomial for K_n. Try:`):
+print(`CIPkn(5,x);`):
+
+
+elif nargs=1 and args[1]=CIPknC then
+print(`CIPknC(n,x): the cycle-index polynomial for K_n, the clever way. Try:`):
+print(`CIPknC(5,x);`):
+
+elif nargs=1 and args[1]=CIPsn then
+print(`CIPsn(n,x): The Polya cycle-index polynomial of the symmmetric group S_n, the clever way. Same output at CIP(permute(n),x), but much faster. Try:`):
+print(`CIPsn(5,x);`):
+
 elif nargs=1 and args[1]=Ck then
 print(`Ck(k): the k-dim unit cube as a graph in our format. Try:`):
 print(` Ck(3); `):
@@ -92,6 +119,9 @@ elif nargs=1 and args[1]=Comp then
 print(`Comp(G): the complement of G=[n,E]. Try:`):
 print(`Comp([3,{{1,2}}]);`):
 
+elif nargs=1 and args[1]=CtoP then
+print(`CtoP(C): Given a permutation in CYCLE notation (a set of list) converts it to one-line notation. Try:`):
+print(`CtoP({[2,3,1],[5,4]});`):
 
 elif nargs=1 and args[1]=Dij then
 print(`Dij(G,a): implements Dijskra's algorithm. Inputs a weighted graph G=[n,E,DT] and a starting `):
@@ -103,15 +133,53 @@ elif nargs=1 and args[1]=DijP then
 print(`DijP(G,a): implements Dijskra's algorithm. Same as Dij(G,a), but in ADDITION, outputs the list of shortest paths realizing the shortest distances. Try:`):
 print(`G:=RWG(10,1/2,10); DijP(G,5);`):
 
+elif nargs=1 and args[1]=EC then
+print(`EC(pi,i): inputs a permutation pi and finds the cycle that belongs to i`):
+
 elif nargs=1 and args[1]=EstimateAverageClique then
 print(`EstimateAverageClique(n,p,k,K) : Uses simulation to estimate the average number of k-cliques in  RG(n,p), followed by the theoretical value `):
 print(`binomial(n,k)*p^binomial(k,2). Try:`):
 print(`EstimateAverageClique(10,1/3,5,1000) ;`):
 
+
+elif nargs=1 and args[1]=EstimateGFperiod then
+print(`EstimateGFperiod(n,x,K)`):
+print(`samples K random functions from [1,n] to [1,n] and a random starting point. and finds the prob. gen. function for this run`):
+print(`followed by the sample average and standard-deviation. Try:`):
+print(`EstimateGFperiod(20,x,100);`):
+
+elif nargs=1 and args[1]=FibMod then
+print(`FibMod(INI,m):the trajectory of the mapping [a,b]->[b,a+b mod m] starting with INI. Try:`):
+print(`FibMod([0,1],11);`):
+
+elif nargs=1 and args[1]=FindPer then
+print(`FindPer(f,i): inputs a function from {1,..,n} to {1,...,n} where n:=nops(f):`):
+print(`and outputs the pair [L1,L2] where L1 is the beginning segment and L2 is the cycle. Try:`):
+print(`FindPer([1,2,3,1],1);`):
+
 elif nargs=1 and args[1]=Findy then
 print(`Findy(n,H): inputs a pos. integer n and a subset H with exacty 2^(n-1)+1 elements`):
 print(`and outputs the vector y promised in Hao Wang's proof. Try:`):
 print(`Findy(3,{1,2,3,4,5});`):
+
+elif nargs=1 and args[1]=GenGp then
+print(`GenGp(S): inputs a set of permutations (all of the same length, nops(S[1])) outputs`):
+print(`the subset of S_n generated by S. Try:`):
+print(`GenGp({[2,3,1],[3,1,2]});`):
+
+
+elif nargs=1 and args[1]=GFperiod then
+print(`GFperiod(n,x):the polynomial whose coeff. of x^j is the prob. that if you`):
+print(`take a random function from [1,n] to [1,n] and a random starting point`):
+print(`the length of the ultimate cycle is j. Try:`):
+print(`GFperiod(5,x);`):
+
+
+elif nargs=1 and args[1]=GFperiodPer then
+print(`GFperiodPer(n,x):the polynomial whose coeff. of x^j is the prob. that if you`):
+print(`take a random PERMUTATION from [1,n] to [1,n] and a random starting point`):
+print(`the length of the ultimate cycle is j. Try:`):
+print(`GFperiodPer(5,x);`):
 
 elif nargs=1 and args[1]=Gnd then
 print(`Gnd(n,d): the graph whose vertices are {0,...,n-1} and edges {i, i+j mod n} j=1..d. Try:`):
@@ -126,6 +194,12 @@ elif nargs=1 and args[1]=HD1 then
 print(`HD1(v): inputs a 0-1 vector and outputs all the vectors where exactly one bit is changed. Try:`):
 print(`HD1([1,0,1]);`):
 
+elif nargs=1 and args[1]=IndPer then
+print(`IndPer(pi): inputs a permuation pi on the set of VERTICES of K_n`):
+print(`outputs the member of S_binomial(n,2) , a certaion permutation on the`):
+print(`set of edges INDUCED by pi. Try:`):
+print(`IndPer([2,3,1,4]);`):
+
 elif nargs=1 and args[1]=IsCo then
 print(`IsCo(G): Is the graph G connected? Try:`):
 print(`IsCo([5,{{1,2},{1,3},{2,3},{4,5}}]);`):
@@ -138,6 +212,14 @@ print(`lam2(Gnd(10,3));`):
 elif nargs=1 and args[1]=LC then
 print(`LC(p): inputs a rational number between 0 and 1 and outputs true with prob. p. Try:`):
 print(`add(x[LC(1/3)],i=1..300);`):
+
+elif nargs=1 and args[1]=LkT then
+print(`LkT(k,N): the first N terms of the number of ORDERED full k-ary trees with (k-1)*n+1 leaves. Try:`):
+print(`LkT(2,20);`):
+
+elif nargs=1 and args[1]=LkUT then
+print(`LkUT(k,N): the first N terms of the number of UNORDERED full k-ary trees with (k-1)*n+1 leaves. Try:`):
+print(`LkUT(2,20);`):
 
 elif nargs=1 and args[1]=LuckyVertex then
 print(`LuckyVertex(n,H): inputs  pos. integer n and a subset H of size 2^(n-1)+1 outputs a member`):
@@ -155,7 +237,8 @@ print(`Note: the Hao Huang famous sensitivity theorem says that`):
 print(`MinMaxNN(Ck(n),2^(n-1)+1)>=sqrt(n). Try`):
 print(`MinMaxNN(Ck(3),5);`):
 
-
+elif nargs=1 and args[1]=MultP then
+print(`MultP(pi,sig): the product of the permutation pi and sig`):
 
 elif nargs=1 and args[1]=MST then
 print(`MST(G): inputs a weighted graph G and performs the Kruskal. Try:`):
@@ -171,6 +254,14 @@ elif nargs=1 and args[1]=Mul then
 print(`Mul(A,B): the product of matrix A and B (assuming that it exists). Try:`):
 print(`Mul([[a1,a2]],[[b1],[b2]]);`):
 
+elif nargs=1 and args[1]=Mult then
+print(`Mult(a): inputs an integer partion p in frequency-notation `):
+print(`1^a1...n^an written as [a1, ...,an] of non-negative integers , i.e.`):
+print(`n=add(i*a[i],i=1..nops(p)): Outputs the number of permutations of length n`):
+print(`whose cycle-structre it is. Namely:`):
+print(`n!/(1!^a1*2!^a2*...*n!^an)/(a1*a2!*..*an!)*0!^a1*1!^a2*...(n-1)!^an .Try:`):
+print(`Mult([1,1,0]);`):
+
 elif nargs=1 and args[1]=Neis then
 print(`Neis(G): inputs a graph G=[n,E] and outputs a list of length n, N, such that`):
 print(`N[i] is the set of neighbors of vertex i. Try:`):
@@ -178,7 +269,7 @@ print(`Neis([3,{{1,2},{1,3}}]);`):
 
 
 elif nargs=1 and args[1]=NuST then
-print(`NuST(G): The number of spanning trees of G (using the Matrix Tree Therorem). Try:`): 
+print(`NuST(G): The number of spanning trees of G (using the Matrix Tree Therorem. Try:`):
 print(`NuST([4,{{1,2},{1,3},{2,3},{1,4},{2,4},{3,4}}]);`):
 
 elif nargs=1 and args[1]=NuCGclever then
@@ -197,9 +288,31 @@ print(`NuCGs(n): the first n terms of the sequence enumerating CONNECTED labeled
 print(`OEIS A001187. Try:`):
 print(`NuCGs(5);`):
 
+
+elif nargs=1 and args[1]=NuULGe then
+print(`NuULGe(N,r): The first N terms of the sequence enumerating UNLABELED GRAPHS with n vertices`):
+print(`and n+r edges. Try: `):
+print(`NuULGe(10,1);`):
+
+elif nargs=1 and args[1]=ParToPer then
+print(`ParToPer(P): Given a partion P of an integer n (a member of Pars1(n,n)) outputs the "canononical permuation" of that type. Try:`):
+print(`ParToPer([0,0,0,1]);`):
+
+elif nargs=1 and args[1]=Pars1 then
+print(`Pars1(n,m): The set of [a1,a2,...,an] such that 1*a1+...+n*an=m. Try:`):
+print(`Pars1(10,10);`):
+
 elif nargs=1 and args[1]=PC then
 print(`PC(T): The Prufer code of the tree T given as a set of edges. NOT in the format [n,E]. Try:`):
 print(`PC({{1,2},{1,3},{1,4}});`):
+
+elif nargs=1 and args[1]=PtoC then
+print(`PtoC(pi): inputs a permutation in one-line notation outputs its cycle decomposition. Try:`):
+print(`PtoC([2,1,4,3,5]);`):
+
+elif nargs=1 and args[1]=RF then
+print(`RF(n). A random function from {1,...,n} to {1,...,n}. Try:`):
+print(`RF(10);`):
 
 elif nargs=1 and args[1]=RG then
 print(`RG(n,p): inputs a pos. integer n and outputs a random graph on {1, ..., n} where each edge {i,j} is picked independently with probability p. Try:`):
@@ -244,6 +357,10 @@ print(`Verify1(5);`):
 elif nargs=1 and args[1]=Vk then
 print(`Vk(k): The list of all 0-1 vectors of length k in lex order. Try:`):
 print(`Vk(5);`):
+
+elif nargs=1 and args[1]=WtP then
+print(`WtP(pi,x): The weight of the permutation pi according to`):
+print(`x[1]^NumberOfOneCycles*x[2]^NumberOfTwoCycles...*x[n]^NumberOf n cycles`):
 
 else
  print(`There is no such thing as`, args):
@@ -776,7 +893,7 @@ od:
  
 #Uvis is he currently set of still unvisoted vertices
 Uvis:={seq(i,i=1..n)}:
-#T[i] is the permanent label (the min. distance from a to i)
+#T[i] is the permanent label (the min. distance from a to i
 #Tt[i]: is the current best upper bound
 for i from 1 to n do
  Tt[i]:=infinity:
@@ -877,6 +994,7 @@ end:
 
 
 #start from C20.txt
+
 #MST1(G,partT,AvE): inputs a weighted graph G and performs ONE step in the Kruskal
 #algoritm by looking at the cheapest member of AvE and trying to join it to
 #partT if it does NOT create a cycle, either way we remove it from AvE
@@ -998,3 +1116,320 @@ od:
 [seq(coeff(f,x,i),i=1..N)]:
 end:
 #End from C23.txt
+
+
+
+#Start From C24.txt
+
+#FibMod(INI,m):the trajectory of the mapping [a,b]->[b,a+b mod m] starting with INI. Try:
+#FibMod([0,1],11);
+FibMod:=proc(INI,m) local pt,L,i:
+pt:=INI:
+L:=[]:
+while not member(pt,L) do
+ L:=[op(L),pt]:
+ pt:=[pt[2],pt[1]+pt[2] mod m]:
+od:
+for i from 1 to nops(L) while L[i]<>pt do od:
+[[op(1..i-1,L)],[op(i..nops(L),L)]]:
+end:
+
+
+#RF(n). A random function from {1,...,n} to {1,...,n}. Try:
+#RF(10);
+RF:=proc(n) local i,ra:
+ra:=rand(1..n):
+[seq(ra(),i=1..n)]:
+end:
+
+#FindPer(f,i): inputs a function from {1,..,n} to {1,...,n} where n:=nops(f):
+#and outputs the pair [L1,L2] where L1 is the beginning segment and L2 is the cycle. Try:
+#FindPer([1,2,3,1],1);
+FindPer:=proc(f,i) local L,pt,i1:
+pt:=i:
+L:=[]:
+while not member(pt,L) do
+ L:=[op(L),pt]:
+ pt:=f[pt]:
+od:
+for i1 from 1 to nops(L) while L[i1]<>pt do od:
+[[op(1..i1-1,L)],[op(i1..nops(L),L)]]:
+end:
+
+#AllF(m,n): all lists of length n with entries from {1,..,m}. Try:
+#AllF(2,5);
+AllF:=proc(m,n) local S,s,i:
+if n=0 then
+   RETURN({[]}):
+fi:
+S:=AllF(m,n-1):
+{seq(seq([op(s),i],s in S),i=1..m)}:
+end:
+
+#GFperiod(n,x):the polynomial whose coeff. of x^j is the prob. that if you
+#take a random function from [1,n] to [1,n] and a random starting point
+#the length of the ultimate cycle is j. Try:
+#GFperiod(5,x);
+GFperiod:=proc(n,x) local S,i,s,f,av,sd:
+S:=AllF(n,n):
+f:=add(add(x^nops(FindPer(s,i)[2]),i=1..n),s in S)/(nops(S)*n):
+av:=subs(x=1,diff(f,x)):
+sd:=sqrt(subs(x=1,diff(x*diff(f,x),x))-av^2):
+[f,[av,sd]]:
+
+end:
+
+#GFperiodPer(n,x):the polynomial whose coeff. of x^j is the prob. that if you
+#take a random permutation from [1,n] to [1,n] and a random starting point
+#the length of the ultimate cycle is j, followed by the average and standard-deviation
+GFperiodPer:=proc(n,x) local S,i,s,f,av,sd:
+S:=permute(n):
+f:=add(add(x^nops(FindPer(s,i)[2]),i=1..n),s in S)/(nops(S)*n):
+av:=subs(x=1,diff(f,x)):
+sd:=sqrt(subs(x=1,diff(x*diff(f,x),x))-av^2):
+[f,[av,sd]]:
+end:
+
+
+
+#EstimateGFperiod(n,x,K)
+#samples K random functions from [1,n] to [1,n] and a random starting point. and finds the prob. gen. function for this run
+#followed by the sample average and standard-deviation. Try:
+#EstimateGFperiod(20,x,100);
+EstimateGFperiod:=proc(n,x,K) local ra,i,j,f,av,sd:
+ra:=rand(1..n):
+f:=evalf(add(x^nops(FindPer(RF(n),ra())[2]),j=1..K)/K):
+av:=subs(x=1,diff(f,x)):
+sd:=sqrt(subs(x=1,diff(x*diff(f,x),x))-av^2):
+[f,[av,sd]]:
+end:
+#End From C24.txt
+
+#start from C25.txt
+
+#YOU HAVE A SET S OF OBJECTS on n "points", WITH A NATURAL ACTION OF A GROUP OF PERMUTATIONS
+#(subset of S_n) and you want to count the number of isomorphim classes
+#for each s in S, Images(s)={g(s), g in G}, you want to count how many such isomorphism classes
+#Def: For a permutation pi decompose into cycles
+#pi=C1*C2*...*Ck, X is a formal variable
+#Wt(pi)=X[nops(C1)]*X[nops(C2)]*...*X[nops(Ck)]
+#Cycle-Index Polynomial of a group of permutaions G (a subset of S-n) is
+#Sum(Wt(pi), pi in G)/nops(G)
+
+#EC(pi,i): inputs a permutation pi and finds the cycle that belongs to i
+EC:=proc(pi,i) local a,C,m,j:
+C:=[i]:
+a:=pi[i]:
+while a<>i do
+C:=[op(C),a]:
+a:=pi[a]:
+od:
+m:=min(C):
+for j from 1 to nops(C) while C[j]<>m do od:
+[op(j..nops(C),C),op(1..j-1,C)]:
+end:
+
+#Mult(a): inputs an integer partion p in frequency-notation 
+#1^a1...n^an written as [a1, ...,an] of non-negative integers , i.e.
+#n=add(i*a[i],i=1..nops(p)): Outputs the number of permutations of length n
+#whose cycle-structre it is. Namely:
+#n!/(1!^a1*2!^a2*...*n!^an)/(a1*a2!*..*an!)*0!^a1*1!^a2*...(n-1)!^an .Try:
+#Mult([1,1,0]);
+
+Mult:=proc(a) local n,i:
+n:=nops(a):
+if n<>add(a[i]*i,i=1..n) then
+  RETURN(FAIL):
+fi:
+
+#n!/(1!^a1*2!^a2*...*n!^an)/(a1*a2!*..*an!)*0!^a1*1!^a2*...(n-1)!^an
+n!/mul(i!^a[i],i=1..n)/mul(a[i]!,i=1..n)*mul((i-1)!^a[i],i=1..n):
+end:
+
+#PtoC(pi): inputs a permutation in one-line notation outputs its cycle decomposition. Try:
+#PtoC([2,1,4,3,5]);
+PtoC:=proc(pi) local S, C,c:
+C:={}:
+S:={op(pi)}:
+while S<>{} do
+ c:=EC(pi,S[1]):
+ S:=S minus {op(c)}:
+  C:=C union {c}:
+ od:
+C:
+end:
+
+#WtP(pi,x): The weight of the permutation pi according to
+#x[1]^NumberOfOneCycles*x[2]^NumberOfTwoCycles...*x[n]^NumberOf n cycles
+WtP:=proc(pi,x) local C,c:
+C:=PtoC(pi):
+mul( x[nops(c)], c in C):
+end:
+
+
+#CIP(G,x): The Polya cycle-index polynomial of the gp G of permutations of length n
+CIP:=proc(G,x) local g: add(WtP(g,x),g in G)/nops(G):end:
+
+#Pars1(n,m): The set of [a1,a2,...,an] such that 1*a1+...+n*an=m. Try:
+#Pars1(10,10);
+Pars1:=proc(n,m) local S,s1,i,S1:
+option remember:
+if m=0 then
+ RETURN({[0$n]}):
+fi:
+
+if n=0 then
+ if m=0 then
+   RETURN({[]}):
+else
+  RETURN({}):
+fi:
+fi:
+
+S:={}:
+
+for i from 0 to trunc(m/n) do
+S1:=Pars1(n-1,m-i*n):
+S:=S union {seq([op(s1),i], s1 in S1)}:
+od:
+S:
+end:
+
+#CIPsn(n,x):CIP(permute(n),x), done cleverly, using Mult(a):
+CIPsn:=proc(n,x) local S,s,i:
+S:=Pars1(n,n):
+add(Mult(s)*mul(x[i]^s[i],i=1..n), s in S)/n!:
+end:
+
+#End from C25.txt
+
+#Start from C26.txt
+
+#MultP(pi,sig): the product of the permutation pi and sig
+MultP:=proc(pi,sig) local i:
+[seq(pi[sig[i]],i=1..nops(pi))]:
+end:
+
+#GenGp(S): inputs a set of permutations (all of the same length, nops(S[1])) outputs
+#the subset of S_n generated by S. Try:
+#GenGp({[2,3,1],[3,1,2]});
+GenGp:=proc(S) local N,G1,i,s,g1,n,G2,G3:
+if S={} then
+  RETURN(FAIL):
+fi:
+ n:=nops(S[1]):
+G1:={[seq(i,i=1..n)]}:
+G2:=G1 union {seq(seq(MultP(g1,s),g1 in G1),s in S)}:
+while G1<>G2 do
+ G3:=G2 union {seq(seq(MultP(g1,s),g1 in G2),s in S)}:
+G1:=G2:
+G2:=G3:
+od:
+G2:
+end:
+
+#CtoP(C): Given a permutation in CYCLE notation (a set of list) converts it to one-line notation. Try:
+#CtoP({[2,3,1],[5,4]});
+CtoP:=proc(C) local i,T,j,n,c:
+n:=add(nops(c), c in C):
+for i from 1 to nops(C) do
+c:=C[i]:
+for j from 1 to nops(c)-1 do
+ T[c[j]]:=c[j+1]:
+od:
+T[c[nops(c)]]:=c[1]:
+od:
+[seq(T[i],i=1..n)]:
+end:
+
+#IndPer(pi): inputs a permuation pi on the set of VERTICES of K_n
+#outputs the member of S_binomial(n,2) , a certaion permutation on the
+#set of edges INDUCED by pi
+IndPer:=proc(pi) local n, Ed, i,j,T,r,T1:
+n:=nops(pi):
+Ed:=[seq(seq({i,j},j=i+1..n),i=1..n)]:
+for r from 1 to nops(Ed) do
+ T1[Ed[r]]:=r:
+od:
+
+for r from 1 to nops(Ed) do
+ T[Ed[r]]:={pi[Ed[r][1]],pi[Ed[r][2]]}:
+od:
+[seq(T1[T[Ed[r]]],r=1..nops(Ed))]:
+end:
+
+#CIPkn(n,x): the cycle-index polynomial for K_n. Try:
+#CIPkn(5,x);
+
+CIPkn:=proc(n,x) local S,pi:
+S:=permute(n):
+ add(WtP(IndPer(pi),x),pi in S)/n!:
+end:
+
+#ParToPer(P): Given a partion P of an integer n (a member of Pars1(n,n)) outputs the "canononical permuation" of that type
+ParToPer:=proc(P) local n,cu,i,j,r,C,c:
+n:=nops(P):
+C:={}:
+cu:=1:
+for i from 1 to n do
+ for j from 1 to P[i] do
+ c:=[seq(r,r=cu..cu+i-1)]:
+ C:=C union {c}:
+  cu:=cu+i:
+ od:
+od:
+CtoP(C):
+end:
+
+
+#CIPknC(n,x): the cycle-index polynomial for K_n done cleverly
+CIPknC:=proc(n,x) local S,s:
+S:=Pars1(n,n):
+ add(Mult(s)*WtP(IndPer(ParToPer(s)),x),s in S)/n!:
+end:
+
+#End from C26.txt
+
+
+##start from C27.txt
+
+#Start from C27.txt
+
+
+#NuULGe(N,r): The first N terms of the sequence enumerating UNLABELED GRAPHS with n vertices
+#and n+r edges
+NuULGe:=proc(N,r) local L,x,i,t:
+L:=[seq(CIPknC(i,x),i=1..N)]:
+L:=subs({seq(x[i]=1+t^i,i=1..binomial(N,2))},L):
+[seq(coeff(L[i],t, i+r ), i=1..N)]:
+end:
+
+
+#LkT(k,N): the first N terms of the number of ORDERED full k-ary trees with (k-1)*n+1 leaves. Try:
+#LkT(2,20);
+LkT:=proc(k,N) local x,f,i,i1:
+f := x:
+
+for i from 1 to (k-1)*N+1 do
+f := expand(x+f^k);
+ f := add(coeff(f,x,i1)*x^i1,i1=1..(k-1)*N+1) :
+od:
+[seq(coeff(f,x, (k-1)*i+1),i=1..N)] :
+end:
+
+
+#LkUT(k,N): the first N terms of the number of UNORDERED full k-ary trees with (k-1)*n+1 leaves. Try:
+#LkUT(2,20);
+LkUT:=proc(k,N) local x,f,i,F,X,i1;
+F:=CIPsn(k,X):
+f:=x:
+for i from 1 to (k-1)*N+1 do
+f:=x+subs({seq(X[i1]=subs(x=x^i1,f),i1=1..k)},F):
+f:= add(coeff(f,x,i1)*x^i1,i1=1..(k-1)*N+1):
+od:
+[seq(coeff(f,x,(k-1)*i+1),i=1..N)] :
+end:
+
+#End from C27.txt
+
+
