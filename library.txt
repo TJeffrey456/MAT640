@@ -246,7 +246,7 @@ ColorGraph := proc(G) local color, e, i, neighbors, u, c, usedColors, maxColor, 
       c := c + 1:
     od:
 
-    color[v] := c;
+    color[i] := c;
     if c > maxColor then
         maxColor := c;
     fi:
