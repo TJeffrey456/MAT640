@@ -109,7 +109,7 @@ end:
 
 
 # Finding the chromatic polynomial of a graph using Deletion-contraction algorithm
-ChromaticPolynomial := proc(G) local n, E, edge, v1, v2, G_minus_e, G_contracted_e, new_vertices, new_edges, neighbor_map, i, u, v, Neighbors, vertex_map:
+ChromaticPolynomial := proc(G,k) local n, E, edge, v1, v2, G_minus_e, G_contracted_e, new_vertices, new_edges, neighbor_map, i, u, v, Neighbors, vertex_map:
 option remember; # this is for memoization
     n := G[1]:
     E := G[2]:
@@ -145,11 +145,11 @@ option remember; # this is for memoization
             new_edges := new_edges union {[min(u,v), max(u,v)]}:
         fi:
     od:
-    # recount edges
+    # recount vertices
     new_vertices := convert({seq(vertex_map[i], i=1..n)}, list):
     G_contracted_e := [nops(new_vertices), new_edges]:
 
-    return ChromaticPolynomial(G_minus_e) - ChromaticPolynomial(G_contracted_e):
+    return ChromaticPolynomial(G_minus_e, k) - ChromaticPolynomial(G_contracted_e, k):
 end:
 
 
