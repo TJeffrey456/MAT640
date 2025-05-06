@@ -109,7 +109,7 @@ end:
 
 
 # Finding the chromatic polynomial of a graph using Deletion-contraction algorithm
-ChromaticPolynomial := proc(G,k) local n, E, edge, v1, v2, G_minus_e, G_contracted_e, new_vertices, new_edges, neighbor_map, i, u, v, Neighbors, vertex_map:
+ChromaticPolynomial := proc(G,k) local n, E, edge, v1, v2, G_minus_e, G_contracted_e, new_vertices, new_edges, neighbor_map, i, u, v, Neighbors, vertex_map, e:
 option remember; # this is for memoization
     n := G[1]:
     E := G[2]:
@@ -168,26 +168,25 @@ FordFulkerson:=proc(G, s, t) local u,v,residual_G,n,parent,max_flow,path_flow,i,
     max_flow := 0:
 
     while parent <> false do
-        printf(max_flow):
         path_flow := infinity:
 
         v := t:
         while v <> s do
             u := parent[v];
-            path_flow = min(path_flow, residual_G[u][v]);
+            path_flow := min(path_flow, residual_G[u][v]);
             v := parent[v];
         od:
 
         v := t:
         while v <> s do
-            u = parent[v];
-            residual_G[u][v] -= path_flow;
-            residual_G[v][u] += path_flow;
+            u := parent[v];
+            residual_G[u][v] := residual_G[u][v] - path_flow;
+            residual_G[v][u] := residual_G[v][u] + path_flow;
 
             v := parent[v]:
         od:
 
-        max_flow += path_flow:
+        max_flow := max_flow + path_flow:
 
         parent := BFS(residual_G,s,t):
     od:
