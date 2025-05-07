@@ -267,5 +267,5 @@ ChinesePostman:=proc(G) local eulerian, odds, matching, pathTable, extraCost, Gm
     result, trail := isEulerian(Gmod):
 
     print("Chinese Postman Tour Cost: ", totalCost):
-    print("Tour: ", result):
+    print("Tour: ", trail):
 end:
