@@ -284,5 +284,5 @@ RWG:=proc(n,p,w) local weights, G, ra, n, E, e:
         weights[e] := ra():
     od:
 
-    RETURN([n, E, weights]):
+    RETURN([n, E, op(weights)]):
 end:
