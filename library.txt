@@ -34,26 +34,21 @@ DiracThm:=proc(G) local n,E,L,i,mindeg:
 end:
 
 # isHamiltonian(G), determines if a Graph is Hamiltonian, find a Hamiltonian path if Dirac's Thm holds 
-isHamiltonian:=proc(G) local DiracHolds, neighbors_list, i, minDegree, vertices, startNode, path, n:
+isHamiltonian:=proc(G) local DiracHolds, neighbors_list, i, vertices, startNode, path, n:
     DiracHolds := DiracThm(G):
     if DiracHolds then
-        # find the path this will be exponential - NP Hard
+        # find the path, this will be exponential - NP Hard
         neighbors_list := Neis(G):
-        
-        minDegree := infinity;
-        n := G[1]:
-
-        for i from 1 to n do
-            minDegree := min(minDegree, nops(neighbors_list[i]));
-        od:
-
-        # Try starting the search from each vertex
-        for i from 1 to n do
-            path := FindPath([i], convert(vertices minus {i}, set));
-            if path <> FAIL then
-                return path;
+        n = G[1]:
+    
+        for v from 1 to n do
+            result := dfs(G, neighbors_list, n, v, [v], {v});
+            if result <> NULL then
+                RETURN(true, result):
             fi:
         od:
+
+        RETURN(FAIL, "Could not find a Hamiltonian Path"):
     else
         RETURN(FAIL, "Dirac's Theorem does not hold!")
     fi:
