@@ -269,20 +269,3 @@ ChinesePostman:=proc(G) local eulerian, odds, matching, pathTable, extraCost, Gm
     print("Chinese Postman Tour Cost: ", totalCost):
     print("Tour: ", result):
 end:
-
-# RWG(n,p,w): generates a random weighted graph with n vertices, edge probability of p, 
-# and a random weight from 1 to w 
-RWG:=proc(n,p,w) local weights, G, ra, n, E, e:
-    G := RG(n,p):
-    ra:=rand(1..w):
-    weights := table():
-
-    n := G[1]:
-    E := G[2]:
-
-    for e in E do
-        weights[e] := ra():
-    od:
-
-    RETURN([n, E, op(weights)]):
-end:

@@ -9,6 +9,10 @@ print("Generating random graph with n =", n, ", p =", p):
 G := RG(n, p):  
 print("Here is the graph G:", G):
 
+Gmat := [[ 0, 16, 13, 0, 0, 0 ], [ 0, 0, 10, 12, 0, 0 ],
+            [ 0, 4, 0, 0, 14, 0 ],  [ 0, 0, 9, 0, 0, 20 ],
+            [ 0, 0, 0, 7, 0, 4 ],   [ 0, 0, 0, 0, 0, 0 ] ]:
+
 
 print("==== Dirac Theorem ===="):
 print("DiracThm:", DiracThm(G)):
@@ -27,13 +31,9 @@ cp := ChromaticPolynomial(G, k):
 print("Chromatic polynomial evaluated at k = 3:", cp):
 
 print("==== Ford-Fulkerson Max Flow ===="):
-if n >= 2 then
-    s := 1: t := n:
-    flow := FordFulkerson(Gmat, s, t):
-    print("Max flow from", s, "to", t, ":", flow):
-else
-    print("Not enough vertices for max flow test"):
-fi:
+s := 1: t := 6:
+flow := FordFulkerson(Gmat, s, t):
+print("Max flow from", s, "to", t, ":", flow):
 
 print("==== Perfect Matching ===="):
 pm := PerfectMatching(G):
