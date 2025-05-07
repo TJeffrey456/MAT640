@@ -6,7 +6,7 @@ read `support.txt`:
 # Check if we can do anything fun with planarity
 # We should do smth with Max flow - min cut (Ford Fulkerson, Edmon-Karp)
 Helpnew:=proc():
-    print(`The ADDITIONAL procedures (added by Jeffrey Tang and Matthew Esaia) are: DiracThm(G), isHamiltonian(G), isEulerian(G), ChromaticPolynomial(G), FordFulkerson(G,s,t), PerfectMatching(G), ColorGraph(G)`):
+    print(`The ADDITIONAL procedures (added by Jeffrey Tang and Matthew Esaia) are: DiracThm(G), isHamiltonian(G), isEulerian(G), ChromaticPolynomial(G), FordFulkerson(G,s,t), PerfectMatching(G), ColorGraph(G), ChinesePostman(G)`):
 end:
 Helpnew():
 print(`To access the list of newly added main procedures again, type "Helpnew()"`):
@@ -34,15 +34,15 @@ DiracThm:=proc(G) local n,E,L,i,mindeg:
 end:
 
 # isHamiltonian(G), determines if a Graph is Hamiltonian, find a Hamiltonian path if Dirac's Thm holds 
-isHamiltonian:=proc(G) local DiracHolds, neighbors_list, i, vertices, startNode, path, n:
+isHamiltonian:=proc(G) local DiracHolds, neighbors_list, i, vertices, result, n:
     DiracHolds := DiracThm(G):
     if DiracHolds then
         # find the path, this will be exponential - NP Hard
         neighbors_list := Neis(G):
-        n = G[1]:
+        n := G[1]:
     
-        for v from 1 to n do
-            result := dfs(G, neighbors_list, n, v, [v], {v});
+        for i from 1 to n do
+            result := FindPath(G, neighbors_list, n, i, [i], {i}):
             if result <> NULL then
                 RETURN(true, result):
             fi:
@@ -190,15 +190,15 @@ FordFulkerson:=proc(G, s, t) local u,v,residual_G,n,parent,max_flow,path_flow,i,
 end:
 
 # Perfect Matching: Given a graph, it will return a perfect matching
-PerfectMatching := proc(G)  local matched, match, used, u, v, i, e:
-  n = G[1]:
-  E = G[2]:
+PerfectMatching := proc(G)  local matched, match, used, u, v, i, n, E, e:
+  n := G[1]:
+  E := G[2]:
   
   matched := {}:
   used := Array(1..n, fill = false):
   for e in E do
-    u=e[1]:
-    v=e[2]:
+    u:=e[1]:
+    v:=e[2]:
     if not used[u] and not used[v] then
       matched := matched union {[u, v]}:
       used[u] := true; 
@@ -212,8 +212,8 @@ end:
 # Finding the chromatic number of a graph using Brooke's Thm as an upper limit, returns the color
 # assignment and the total number of colors used
 ColorGraph := proc(G) local color, e, i, neighbors, u, c, usedColors, maxColor, n, E:
-  n = G[1]:
-  E = G[2]:
+  n := G[1]:
+  E := G[2]:
   color := Array(1..n, fill = 0):
   maxColor := 0:
 
@@ -250,11 +250,11 @@ ColorGraph := proc(G) local color, e, i, neighbors, u, c, usedColors, maxColor, 
 end:
 
 # Input: weighted graph G = [n, E, op(T)]
-ChinesePostman:=proc(G) local eulerian, odds, matching, pathTable, extraCost, Gmod, totalCost, trail:
+ChinesePostman:=proc(G) local eulerian, odds, matching, pathTable, extraCost, Gmod, totalCost, trail, result:
     # If it is Eulerian, the answer is just the Eulerian circuit, so return that
-    eulerian := isEulerian(G):
+    result, eulerian := isEulerian(G):
     if eulerian <> FAIL then
-        printf("Graph is Eulerian. Eulerian circuit: %a\n", res):
+        printf("Graph is Eulerian. Eulerian circuit: %a\n", eulerian):
         RETURN(SumEdgeWeights(G)):
     fi:
 
@@ -268,4 +268,12 @@ ChinesePostman:=proc(G) local eulerian, odds, matching, pathTable, extraCost, Gm
 
     print("Chinese Postman Tour Cost: ", totalCost):
     print("Tour: ", result):
+end:
+
+# RWG(n,p,w): generates a random weighted graph with n vertices, edge probability of p, 
+# and a random weight from 1 to w 
+RWG:=proc(n,p,w) local weights, G, ra:
+    G := RG(n,p):
+    ra:=rand(1..w):
+    weights := {} # finish this up Mattie
 end:

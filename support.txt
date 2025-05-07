@@ -2,7 +2,7 @@
 
 
 Helpsupport:=proc()
-    print(`These are the SUPPORTING procedures we added after instruction: DegreeList(G), BFS(G,s,t)`):
+    print(`These are the SUPPORTING procedures we added after instruction: DegreeList(G), BFS(G,s,t), FindPath(G, neighborhood, n, current, path, visited), SumEdgeWeights(G), OddVertices(G), AllMatchings(L), MatchingPathsAndCost(matching, G), BestMatchingAndPaths(odds, G), AddPathsToGraph(G, pathTable)`):
 end:
 Helpsupport():
 print(`To access the list of newly added support procedures again, type "Helpsupport()"`):
@@ -61,13 +61,13 @@ end:
 FindPath := proc(G, neighborhood, n, current, path, visited) local neighbors, v, result:
 
     if nops(path) = n then
-        RETURN(pathSoFar):
+        RETURN(path):
     fi:
 
     neighbors := neighborhood[current];
     for v in neighbors do
         if not member(v, visited) then
-            result := dfs(G, A, n, v, [op(pathSoFar), v], visited union {v});
+            result := FindPath(G, neighborhood, n, v, [op(path), v], visited union {v});
             if result <> NULL then
                 RETURN(result):
             fi:

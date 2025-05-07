@@ -3,22 +3,23 @@ read `main.txt`:
 
 ## Testing library procedures
 
-n := 5:
+n := 4:
 p := 1: 
 print("Generating random graph with n =", n, ", p =", p):
 G := RG(n, p):  
 print("Here is the graph G:", G):
 
+
 print("==== Dirac Theorem ===="):
 print("DiracThm:", DiracThm(G)):
 
 print("==== Hamiltonian Path (if Dirac holds) ===="):
-res := isHamiltonian(G):
-print("Hamiltonian path result:", res):
+success, res := isHamiltonian(G):
+print("Hamiltonian path result:", success, res):
 
 print("==== Eulerian Circuit ===="):
-res := isEulerian(G):
-print("Eulerian circuit result:", res):
+success, res := isEulerian(G):
+print("Eulerian circuit result:", success, res):
 
 print("==== Chromatic Polynomial ===="):
 k := 3:
