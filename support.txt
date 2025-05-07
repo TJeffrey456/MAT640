@@ -58,24 +58,22 @@ BFS:=proc(G,s,t) local n,visited,queue,parent,u,v:
 end:
 
 # Backtracking function to find a Hamiltonian path
-FindPath := proc(currentPath, remainingNodes) local currentNode, current_neighbors, neighbor, newRemaining, newPath, result;
-    if nops(currentPath) = n then
-        return currentPath; # Hamiltonian path found
+FindPath := proc(G, neighborhood, n, current, path, visited) local neighbors, v, result:
+
+    if nops(path) = n then
+        return pathSoFar:
     fi:
 
-    currentNode := currentPath[-1]:
-    current_neighbors := neighbors_list[currentNode];
-
-    for neighbor in current_neighbors do
-        if neighbor in remainingNodes then
-            newRemaining := remainingNodes minus {neighbor};
-            newPath := [op(currentPath), neighbor];
-            result := FindPath(newPath, newRemaining);
-            if result <> FAIL then
-                return true, result;
+    neighbors := neighborhood[current];
+    for v in neighbors do
+        if not member(v, visited) then
+            result := dfs(G, A, n, v, [op(pathSoFar), v], visited union {v});
+            if result <> NULL then
+                return result:
             fi:
         fi:
     od:
+
     return FAIL:
 end:
 
