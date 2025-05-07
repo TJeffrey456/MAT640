@@ -61,7 +61,7 @@ end:
 FindPath := proc(G, neighborhood, n, current, path, visited) local neighbors, v, result:
 
     if nops(path) = n then
-        return pathSoFar:
+        RETURN(pathSoFar):
     fi:
 
     neighbors := neighborhood[current];
@@ -69,12 +69,12 @@ FindPath := proc(G, neighborhood, n, current, path, visited) local neighbors, v,
         if not member(v, visited) then
             result := dfs(G, A, n, v, [op(pathSoFar), v], visited union {v});
             if result <> NULL then
-                return result:
+                RETURN(result):
             fi:
         fi:
     od:
 
-    return FAIL:
+    RETURN(NULL): 
 end:
 
 # Given a weighted graph G = [n,E,op(T)] returns the sum of the edge weights
