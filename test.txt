@@ -5,6 +5,7 @@ read `main.txt`:
 
 n := 4:
 p := 1: 
+K := 10:
 print("Generating random graph with n =", n, ", p =", p):
 G := RG(n, p):  
 print("Here is the graph G:", G):
@@ -12,6 +13,20 @@ print("Here is the graph G:", G):
 Gmat := [[ 0, 16, 13, 0, 0, 0 ], [ 0, 0, 10, 12, 0, 0 ],
             [ 0, 4, 0, 0, 14, 0 ],  [ 0, 0, 9, 0, 0, 20 ],
             [ 0, 0, 0, 7, 0, 4 ],   [ 0, 0, 0, 0, 0, 0 ] ]:
+
+#Gweight := RWG(n, p, K):
+Gweight := [
+    5,
+    { {1,2}, {2,3}, {3,4}, {1,4}, {1,5}, {3,5} },
+    table([
+        {1,2} = 3,
+        {2,3} = 4,
+        {3,4} = 5,
+        {1,4} = 6,
+        {1,5} = 2,
+        {3,5} = 1
+    ])
+]:
 
 
 print("==== Dirac Theorem ===="):
@@ -45,4 +60,5 @@ print("Color assignment:", colors[1]):
 print("Number of colors used:", colors[2]):
 
 print("==== Chinese Postman Problem ===="):
-res := ChinesePostman(G):
+res := ChinesePostman(Gweight):
+print("Chinee Postman result:", res):
