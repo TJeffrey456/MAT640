@@ -78,3 +78,114 @@ FindPath := proc(currentPath, remainingNodes) local currentNode, current_neighbo
     od:
     return FAIL:
 end:
+
+# Given a weighted graph G = [n,E,op(T)] returns the sum of the edge weights
+SumEdgeWeights:=proc(G) local sum, E, e, weights:
+    sum := 0:
+    E := G[2]:
+    weights := G[3]:
+
+    for e in E do
+        sum := sum + weights[e]:
+    od:
+
+    RETURN(sum):
+end:
+
+OddVertices := proc(G) local degs, odds, i:
+    degs := DegreeList(G):
+    odds := []:
+    for i from 1 to nops(degs) do
+        if degs[i] mod 2 <> 0 then
+            odds := [op(odds), i];
+        fi:
+    od:
+    RETURN(odds):
+end:
+
+AllMatchings := proc(L) local matchings, x, y, rest, submatchings, M:
+    if nops(L) = 0 then
+        return [[]];
+    fi:
+    
+    matchings := []:
+    x := L[1]:
+
+    for i from 2 to nops(L) do
+        y := L[i]:
+        rest := [op(2..i-1, L), op(i+1..nops(L), L)]:
+        submatchings := AllMatchings(rest):
+
+        for M in submatchings do
+            matchings := [op(matchings), [[x, y], op(M)]]:
+        od:
+    od:
+
+    RETURN(matchings):
+end:
+
+MatchingPathsAndCost := proc(matching, G) local totalCost, pathTable, pair, u, v, D, P, i:
+    
+    totalCost := 0:
+    pathTable := table():
+
+    for pair in matching do
+        u := pair[1]:
+        v := pair[2]:
+
+        # Compute shortest path from u
+        D, P := op(DijP(G, u)):
+
+        # Add path and cost to result table
+        pathTable[{u, v}] := P[v]:
+        totalCost := totalCost + D[v]:
+    od:
+
+    return totalCost, pathTable:
+end:
+
+BestMatchingAndPaths := proc(odds, G) local matchings, minCost, bestMatching, bestPaths, M, cost, paths:  
+    matchings := AllMatchings(odds):
+    minCost := infinity:
+    bestMatching := NULL:
+    bestPaths := table():
+
+    for M in matchings do
+        cost, paths := MatchingPathsAndCost(M, G):
+        if cost < minCost then
+            minCost := cost:
+            bestMatching := M:
+            bestPaths := paths:
+        fi:
+    od:
+
+    return bestMatching, bestPaths, minCost:
+end:
+
+AddPathsToGraph := proc(G, pathTable) local n, E, DT, Enew, DTnew, u, v, path, i, edge:
+    n := G[1]:
+    E := G[2]:
+    DT := G[3]:
+
+    Enew := copy(E):
+    DTnew := copy(DT):
+
+    for edge in indices(pathTable) do
+        path := pathTable[edge]:
+        for i from 1 to nops(path)-1 do
+            u := path[i]:
+            v := path[i+1]:
+            edge := {u, v}:
+            Enew := Enew union {edge}:
+
+            # Update weight table (even if already present — allow duplicates)
+            if assigned(DTnew[edge]) then
+                DTnew[edge] := DTnew[edge] + DT[edge]:  # Treat as duplicating
+            else
+                DTnew[edge] := DT[edge]:
+            fi:
+        od:
+    od:
+
+    return [n, Enew, DTnew]:
+end:

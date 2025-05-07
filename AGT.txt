@@ -970,6 +970,7 @@ for v in Nei1 do
 if T[cu]+DT[{cu,v}]<Tt[v] then
  Tt[v]:=T[cu]+DT[{cu,v}]:
  TempPaths[v]:=[op(Paths[cu]),v]:
+ Paths[v] := TempPaths[v]:
 fi:
 od:
 

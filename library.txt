@@ -255,7 +255,7 @@ ColorGraph := proc(G) local color, e, i, neighbors, u, c, usedColors, maxColor, 
 end:
 
 # Input: weighted graph G = [n, E, op(T)]
-ChinesePostman:=proc(G) local eulerian:
+ChinesePostman:=proc(G) local eulerian, odds, matching, pathTable, extraCost, Gmod, totalCost, trail:
     # If it is Eulerian, the answer is just the Eulerian circuit, so return that
     eulerian := isEulerian(G):
     if eulerian <> FAIL then
@@ -265,16 +265,12 @@ ChinesePostman:=proc(G) local eulerian:
 
     # Continue with rest of Chinese Postman steps
 
+    odds := OddVertices(G):
+    matching, pathTable, extraCost := BestMatchingAndPaths(odds, G):
+    Gmod := AddPathsToGraph(G, pathTable):
+    totalCost := SumEdgeWeights(Gmod):
+    trail := isEulerian(Gmod):
 
-end:
-
-OddVertices:=proc(G) local degs, odds, i;
-    degs := DegreeList(G):
-    odds := []:
-    for i from 1 to nops(degs) do
-        if degs[i] mod 2 <> 0 then
-            odds := [op(odds), i];
-        fi:
-    od:
-    RETURN(odds):
+    print("Chinese Postman Tour Cost: ", totalCost):
+    print("Tour: ", trail):
 end:
