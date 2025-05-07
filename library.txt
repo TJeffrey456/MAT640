@@ -269,8 +269,8 @@ ChinesePostman:=proc(G) local eulerian, odds, matching, pathTable, extraCost, Gm
     matching, pathTable, extraCost := BestMatchingAndPaths(odds, G):
     Gmod := AddPathsToGraph(G, pathTable):
     totalCost := SumEdgeWeights(Gmod):
-    trail := isEulerian(Gmod):
+    result, trail := isEulerian(Gmod):
 
     print("Chinese Postman Tour Cost: ", totalCost):
-    print("Tour: ", trail):
+    print("Tour: ", result):
 end:

@@ -1,6 +1,47 @@
 ## This is a test file for the newly added methods in library.txt and support.txt
-
-## Testing support procedures
-
+read `main.txt`:
 
 ## Testing library procedures
+
+n := 5:
+p := 1: 
+print("Generating random graph with n =", n, ", p =", p):
+G := RG(n, p):  
+print("Here is the graph G:", G):
+
+print("==== Dirac Theorem ===="):
+print("DiracThm:", DiracThm(G)):
+
+print("==== Hamiltonian Path (if Dirac holds) ===="):
+res := isHamiltonian(G):
+print("Hamiltonian path result:", res):
+
+print("==== Eulerian Circuit ===="):
+res := isEulerian(G):
+print("Eulerian circuit result:", res):
+
+print("==== Chromatic Polynomial ===="):
+k := 3:
+cp := ChromaticPolynomial(G, k):
+print("Chromatic polynomial evaluated at k = 3:", cp):
+
+print("==== Ford-Fulkerson Max Flow ===="):
+if n >= 2 then
+    s := 1: t := n:
+    flow := FordFulkerson(Gmat, s, t):
+    print("Max flow from", s, "to", t, ":", flow):
+else
+    print("Not enough vertices for max flow test"):
+fi:
+
+print("==== Perfect Matching ===="):
+pm := PerfectMatching(G):
+print("Perfect matching:", pm):
+
+print("==== Graph Coloring ===="):
+colors := ColorGraph(G):
+print("Color assignment:", colors[1]):
+print("Number of colors used:", colors[2]):
+
+print("==== Chinese Postman Problem ===="):
+res := ChinesePostman(G):

@@ -103,7 +103,7 @@ OddVertices := proc(G) local degs, odds, i:
     RETURN(odds):
 end:
 
-AllMatchings := proc(L) local matchings, x, y, rest, submatchings, M:
+AllMatchings := proc(L) local matchings, x, y, i, rest, submatchings, M:
     if nops(L) = 0 then
         return [[]];
     fi:
