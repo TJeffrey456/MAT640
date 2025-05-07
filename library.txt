@@ -16,7 +16,7 @@ print(`To access the list of newly added main procedures again, type "Helpnew()"
 DiracThm:=proc(G) local n,E,L,i,mindeg:
     n := G[1]:
     E := G[2]:
-    L := Degrees(G):
+    L := DegreeList(G):
 
     mindeg := infinity:
 
@@ -63,7 +63,7 @@ end:
 isEulerian:= proc(G) local degList, VisitedE, CCset, trail, stack, neighbors, nextV, i, e, curr, n, E:
     n := G[1]:
     E := G[2]:
-    degList := Degrees(G):
+    degList := DegreeList(G):
     for i from 1 to n do
         if degList[i] mod 2 <> 0 then 
             RETURN(FAIL, "G has a vertex of odd degree!")
@@ -252,4 +252,29 @@ ColorGraph := proc(G) local color, e, i, neighbors, u, c, usedColors, maxColor, 
   od:
 
   [color, maxColor]:
+end:
+
+# Input: weighted graph G = [n, E, op(T)]
+ChinesePostman:=proc(G) local eulerian:
+    # If it is Eulerian, the answer is just the Eulerian circuit, so return that
+    eulerian := isEulerian(G):
+    if eulerian <> FAIL then
+        printf("Graph is Eulerian. Eulerian circuit: %a\n", res):
+        RETURN(SumEdgeWeights(G)):
+    fi:
+
+    # Continue with rest of Chinese Postman steps
+
+
+end:
+
+OddVertices:=proc(G) local degs, odds, i;
+    degs := DegreeList(G):
+    odds := []:
+    for i from 1 to nops(degs) do
+        if degs[i] mod 2 <> 0 then
+            odds := [op(odds), i];
+        fi:
+    od:
+    RETURN(odds):
 end:
