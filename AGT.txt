@@ -370,7 +370,51 @@ fi:
 
 end:
 
+HelpNew:=proc():
+if args=NULL then
 
+print(`The MAIN procedures are: DiracThm, isHamiltonian, isEulerian, ChromaticPolynomial, FordFulkerson, PerfectMatching, ColorGraph, ChinesePostman`):
+print(`The SUPPORTING procedures are: DegreeList, BFS, FindPath, SumEdgeWeights, OddVertices, AllMatchings, MatchingPathsAndCost, BestMatchingAndPaths, AddPathsToGraph):
+print(`  `):
+
+elif nargs=1 and args[1]=DiracThm then
+print(`DiracThm(G): Given a graph G = [n,E], returns true if Dirac's Theorem holds true and false otherwise. Try:`):
+print(`DiracThm(RG(10, 1/2));`):
+
+elif nargs=1 and args[1]=isHamiltonian then
+print(`isHamiltonian(G): Determines if a graph G is Hamiltonian, finds and returns a Hamiltonian path if Dirac's Thm holds. Otherwise, returns FAIL. Try:`):
+print(`isHamiltonian(RG(10, 1/2));`):
+
+elif nargs=1 and args[1]=isEulerian then
+print(`isEulerian(G): Determines if a graph G is Eulerian, returns an Eulerian circuit if true. Otherwise, returns FAIL. Try:`):
+print(`isEulerian(RG(10, 1/2));`):
+
+elif nargs=1 and args[1]=ChromaticPolynomial then
+print(`ChromaticPolynomial(G,k): Finds the chromatic polynomial of a graph G evaluated at k using Deletion-contraction algorithm. Try:`):
+print(`ChromaticPolynomial(RG(10, 1/2), 1);`):
+
+elif nargs=1 and args[1]=FordFulkerson then
+print(`FordFulkerson(G,s,t): Finds and returns max flow from s to t given a weighted adjacency matrix G. Try:`):
+print(`FordFulkerson(Gmat, 1, 6);`):
+
+elif nargs=1 and args[1]=PerfectMatching then
+print(`PerfectMatching(G): Given a graph G, returns a perfect matching. Try:`):
+print(`PerfectMatching(RG(10, 1/2));`):
+
+elif nargs=1 and args[1]=ColorGraph then
+print(`ColorGraph(G): Finds the chromatic number of a graph G using Brooke's Thm as an upper limit, returns the color assignment and the total number of colors used. Try:`):
+print(`ColorGraph(RG(10, 1/2));`):
+
+elif nargs=1 and args[1]=ChinesePostman then
+print(`ChinesePostman(G): Given a weighted directed graph G, finds a lowest weight closed walk of the graph in which each edge is traversed at least once, rather than exactly once. Try:`):
+print(`ChinesePostman(RWG(8, 1/2, 10));`):
+
+else
+ print(`There is no such thing as`, args):
+
+fi:
+
+end:
 
 
 
@@ -1433,4 +1477,447 @@ end:
 
 #End from C27.txt
 
+#From support.txt (Added by Jeffrey Tang and Matthew Esaia)
+# Given a graph G = [n,E], returns the list of degrees for each vertex
+DegreeList := proc(G) local n,E,e,L:
+    n := G[1]:
+    E := G[2]:
 
+    L := [seq(0, 1..n)]:
+
+    # Iterates over the edges and increments the corresponding degrees
+    for e in E do
+        L[e[1]] := L[e[1]] + 1:
+        L[e[2]] := L[e[2]] + 1:
+    od:
+
+    RETURN(L):
+end:
+
+# Given a graph G = weighted adjacency matrix and vertices s and t, runs BFS on G starting from s
+# Returns parent[] to store the if there is a path from s to t
+# Otherwise, returns false
+BFS:=proc(G,s,t) local n,visited,queue,parent,u,v:
+    n := nops(G):
+
+    visited := [seq(0$n)]:
+    parent := [seq(0$n)]:
+
+    queue := {s}:
+    visited[s] := 1:
+    parent[s] := -1:
+
+    while queue <> {} do
+        u := queue[1]:
+        queue := queue minus {u}:
+
+        for v from 1 to n do
+            if (visited[v] = 0 and G[u][v] > 0) then
+                if (v = t) then
+                    parent[v] := u:
+                    RETURN(parent):
+                fi:
+
+                queue := queue union {v}:
+                parent[v] := u:
+                visited[v] := 1:
+            fi:
+        od:
+    od:
+
+    RETURN(false):
+end:
+
+# Backtracking function to find a Hamiltonian path
+FindPath := proc(G, neighborhood, n, current, path, visited) local neighbors, v, result:
+
+    if nops(path) = n then
+        RETURN(path):
+    fi:
+
+    neighbors := neighborhood[current];
+    for v in neighbors do
+        if not member(v, visited) then
+            result := FindPath(G, neighborhood, n, v, [op(path), v], visited union {v});
+            if result <> NULL then
+                RETURN(result):
+            fi:
+        fi:
+    od:
+
+    RETURN(NULL): 
+end:
+
+# Given a weighted graph G = [n,E,op(T)] returns the sum of the edge weights
+SumEdgeWeights:=proc(G) local sum, E, e, weights:
+    sum := 0:
+    E := G[2]:
+    weights := G[3]:
+
+    for e in E do
+        sum := sum + weights[e]:
+    od:
+
+    RETURN(sum):
+end:
+
+OddVertices := proc(G) local degs, odds, i:
+    degs := DegreeList(G):
+    odds := []:
+    for i from 1 to nops(degs) do
+        if degs[i] mod 2 <> 0 then
+            odds := [op(odds), i];
+        fi:
+    od:
+    RETURN(odds):
+end:
+
+AllMatchings := proc(L) local matchings, x, y, i, rest, submatchings, M:
+    if nops(L) = 0 then
+        return [[]];
+    fi:
+    
+    matchings := []:
+    x := L[1]:
+
+    for i from 2 to nops(L) do
+        y := L[i]:
+        rest := [op(2..i-1, L), op(i+1..nops(L), L)]:
+        submatchings := AllMatchings(rest):
+
+        for M in submatchings do
+            matchings := [op(matchings), [[x, y], op(M)]]:
+        od:
+    od:
+
+    RETURN(matchings):
+end:
+
+MatchingPathsAndCost := proc(matching, G) local totalCost, pathTable, pair, u, v, D, P, i:
+    
+    totalCost := 0:
+    pathTable := table():
+
+    for pair in matching do
+        u := pair[1]:
+        v := pair[2]:
+
+        # Compute shortest path from u
+        D, P := op(DijP(G, u)):
+
+        # Add path and cost to result table
+        pathTable[{u, v}] := P[v]:
+        totalCost := totalCost + D[v]:
+    od:
+
+    return totalCost, pathTable:
+end:
+
+BestMatchingAndPaths := proc(odds, G) local matchings, minCost, bestMatching, bestPaths, M, cost, paths:  
+    matchings := AllMatchings(odds):
+    minCost := infinity:
+    bestMatching := NULL:
+    bestPaths := table():
+
+    for M in matchings do
+        cost, paths := MatchingPathsAndCost(M, G):
+        if cost < minCost then
+            minCost := cost:
+            bestMatching := M:
+            bestPaths := paths:
+        fi:
+    od:
+
+    return bestMatching, bestPaths, minCost:
+end:
+
+AddPathsToGraph := proc(G, pathTable) local n, E, DT, Enew, DTnew, u, v, path, i, edge:
+    n := G[1]:
+    E := G[2]:
+    DT := G[3]:
+
+    Enew := copy(E):
+    DTnew := copy(DT):
+
+    for edge in indices(pathTable) do
+        path := pathTable[edge]:
+        for i from 1 to nops(path)-1 do
+            u := path[i]:
+            v := path[i+1]:
+            edge := {u, v}:
+            Enew := Enew union {edge}:
+
+            # Update weight table (even if already present — allow duplicates)
+            if assigned(DTnew[edge]) then
+                DTnew[edge] := DTnew[edge] + DT[edge]:  # Treat as duplicating
+            else
+                DTnew[edge] := DT[edge]:
+            fi:
+        od:
+    od:
+
+    return [n, Enew, DTnew]:
+end:
+#end support.txt
+
+#From library.txt (Added by Jeffrey Tang and Matthew Esaia)
+
+# Given a graph G = [n,E], returns true if Dirac's Theorem holds true and false otherwise
+DiracThm:=proc(G) local n,E,L,i,mindeg:
+    n := G[1]:
+    E := G[2]:
+    L := DegreeList(G):
+
+    mindeg := infinity:
+
+    for i from 1 to n do
+        if (L[i] < mindeg) then
+            mindeg := L[i]:
+        fi:
+    od:
+
+    if mindeg >= n/2 then
+        RETURN(true):
+    else
+        RETURN(false):
+    fi:
+end:
+
+# isHamiltonian(G), determines if a Graph is Hamiltonian, find a Hamiltonian path if Dirac's Thm holds 
+isHamiltonian:=proc(G) local DiracHolds, neighbors_list, i, vertices, result, n:
+    DiracHolds := DiracThm(G):
+    if DiracHolds then
+        # find the path, this will be exponential - NP Hard
+        neighbors_list := Neis(G):
+        n := G[1]:
+    
+        for i from 1 to n do
+            result := FindPath(G, neighbors_list, n, i, [i], {i}):
+            if result <> NULL then
+                RETURN(true, result):
+            fi:
+        od:
+
+        RETURN(FAIL, "Could not find a Hamiltonian Path"):
+    else
+        RETURN(FAIL, "Dirac's Theorem does not hold!")
+    fi:
+end:
+
+# isEulerian(G) determines if a graph is Eulerian, return Eulerian circuit if true
+isEulerian:= proc(G) local degList, VisitedE, CCset, trail, stack, neighbors, nextV, i, e, curr, n, E:
+    n := G[1]:
+    E := G[2]:
+    degList := DegreeList(G):
+    for i from 1 to n do
+        if degList[i] mod 2 <> 0 then 
+            RETURN(FAIL, "G has a vertex of odd degree!")
+        fi:
+    od:
+    # so its Eulerian, find the circuit
+
+    # Step 2: Check that the graph is connected
+    CCset := CC([n, E], 1):
+    if {seq(i, i=1..n)} minus CCset <> {} then
+        RETURN(FAIL, "Graph is not connected"):
+    fi:
+    
+    # Hierholzer's algorithm for Eulerian path (simpler than Fleury’s)
+    VisitedE := {}:
+    trail := []:
+    stack := [1]:  # Start from vertex 1 (arbitrary, since it's Eulerian)
+    neighbors := table():
+    
+    for i from 1 to n do
+        neighbors[i] := {}:
+    od:
+    for e in E do
+        neighbors[e[1]] := neighbors[e[1]] union {[e[1], e[2]]}:
+        neighbors[e[2]] := neighbors[e[2]] union {[e[2], e[1]]}:
+    od:
+    
+    while nops(stack) > 0 do
+        curr := stack[-1]:
+        if neighbors[curr] = {} then
+            trail := [op(trail), curr]:
+            stack := stack[1..-2]:
+        else
+            nextV := op(1, neighbors[curr]):
+            neighbors[curr] := neighbors[curr] minus {nextV}:
+            neighbors[nextV[2]] := neighbors[nextV[2]] minus {[nextV[2], nextV[1]]}:
+            stack := [op(stack), nextV[2]]:
+        fi:
+    od:
+    
+    trail:
+end:
+
+
+# Finding the chromatic polynomial of a graph using Deletion-contraction algorithm
+ChromaticPolynomial := proc(G,k) local n, E, edge, v1, v2, G_minus_e, G_contracted_e, new_vertices, new_edges, neighbor_map, i, u, v, Neighbors, vertex_map, e:
+option remember; # this is for memoization
+    n := G[1]:
+    E := G[2]:
+
+    # base case
+    if E = {} then
+        return k^n:
+    fi:
+    if n = 0 then
+        return 1:
+    fi:
+
+    edge := E[1]:
+    v1 := edge[1]: v2 := edge[2]:
+
+    G_minus_e := [n, E minus {edge}]:
+
+    # vertex remap for contraction
+    vertex_map := table():
+    for i from 1 to n do
+        if i = v2 then
+            vertex_map[i] := v1:
+        else
+            vertex_map[i] := i:
+        fi:
+    od:
+    # update edges
+    new_edges := {}:
+    for e in E minus {edge} do
+        u := vertex_map[e[1]]:
+        v := vertex_map[e[2]]:
+        if u <> v then
+            new_edges := new_edges union {[min(u,v), max(u,v)]}:
+        fi:
+    od:
+    # recount vertices
+    new_vertices := convert({seq(vertex_map[i], i=1..n)}, list):
+    G_contracted_e := [nops(new_vertices), new_edges]:
+
+    return ChromaticPolynomial(G_minus_e, k) - ChromaticPolynomial(G_contracted_e, k):
+end:
+
+
+# Finds the max flow from s to t given a weighted adjacency matrix G
+FordFulkerson:=proc(G, s, t) local u,v,residual_G,n,parent,max_flow,path_flow,i,j:
+    n := nops(G):
+    residual_G := [seq([seq(0, j=1..n)], i=1..n)]:
+
+    for u from 1 to n do
+        for v from 1 to n do
+            residual_G[u][v] := G[u][v]:
+        od:
+    od:
+
+    parent := BFS(residual_G,s,t):
+    max_flow := 0:
+
+    while parent <> false do
+        path_flow := infinity:
+
+        v := t:
+        while v <> s do
+            u := parent[v];
+            path_flow := min(path_flow, residual_G[u][v]);
+            v := parent[v];
+        od:
+
+        v := t:
+        while v <> s do
+            u := parent[v];
+            residual_G[u][v] := residual_G[u][v] - path_flow;
+            residual_G[v][u] := residual_G[v][u] + path_flow;
+
+            v := parent[v]:
+        od:
+
+        max_flow := max_flow + path_flow:
+
+        parent := BFS(residual_G,s,t):
+    od:
+
+    RETURN(max_flow):
+end:
+
+# Perfect Matching: Given a graph, it will return a perfect matching
+PerfectMatching := proc(G)  local matched, match, used, u, v, i, n, E, e:
+  n := G[1]:
+  E := G[2]:
+  
+  matched := {}:
+  used := Array(1..n, fill = false):
+  for e in E do
+    u:=e[1]:
+    v:=e[2]:
+    if not used[u] and not used[v] then
+      matched := matched union {[u, v]}:
+      used[u] := true; 
+      used[v] := true:
+    fi:
+  od:
+  
+  matched:
+end:
+
+# Finding the chromatic number of a graph using Brooke's Thm as an upper limit, returns the color
+# assignment and the total number of colors used
+ColorGraph := proc(G) local color, e, i, neighbors, u, c, usedColors, maxColor, n, E:
+  n := G[1]:
+  E := G[2]:
+  color := Array(1..n, fill = 0):
+  maxColor := 0:
+
+  for i from 1 to n do
+    neighbors := {}:
+    # get the neighbors of vertex i
+    for e in E do
+      if e[1] = i then
+          neighbors := neighbors union {e[2]}:
+      elif e[2] = i then
+          neighbors := neighbors union {e[1]}:
+      fi:
+    od:
+
+    usedColors := {}:
+    for u in neighbors do
+      if color[u] <> 0 then
+          usedColors := usedColors union {color[u]}:
+      fi:
+    od:
+
+    c := 1;
+    while member(c, usedColors) do
+      c := c + 1:
+    od:
+
+    color[i] := c;
+    if c > maxColor then
+        maxColor := c;
+    fi:
+  od:
+
+  [color, maxColor]:
+end:
+
+# Input: weighted graph G = [n, E, op(T)]
+ChinesePostman:=proc(G) local eulerian, odds, matching, pathTable, extraCost, Gmod, totalCost, trail, result:
+    # If it is Eulerian, the answer is just the Eulerian circuit, so return that
+    result, eulerian := isEulerian(G):
+    if eulerian <> FAIL then
+        printf("Graph is Eulerian. Eulerian circuit: %a\n", eulerian):
+        RETURN(SumEdgeWeights(G)):
+    fi:
+
+    # Continue with rest of Chinese Postman steps
+
+    odds := OddVertices(G):
+    matching, pathTable, extraCost := BestMatchingAndPaths(odds, G):
+    Gmod := AddPathsToGraph(G, pathTable):
+    totalCost := SumEdgeWeights(Gmod):
+    result, trail := isEulerian(Gmod):
+
+    print("Chinese Postman Tour Cost: ", totalCost):
+    print("Tour: ", trail):
+end:
+
+#end library.txt
