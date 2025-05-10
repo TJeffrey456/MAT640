@@ -374,7 +374,7 @@ HelpNew:=proc():
 if args=NULL then
 
 print(`The MAIN procedures are: DiracThm, isHamiltonian, isEulerian, ChromaticPolynomial, FordFulkerson, PerfectMatching, ColorGraph, ChinesePostman`):
-print(`The SUPPORTING procedures are: DegreeList, BFS, FindPath, SumEdgeWeights, OddVertices, AllMatchings, MatchingPathsAndCost, BestMatchingAndPaths, AddPathsToGraph):
+print(`The SUPPORTING procedures are: DegreeList, BFS, FindPath, SumEdgeWeights, OddVertices, AllMatchings, MatchingPathsAndCost, BestMatchingAndPaths, AddPathsToGraph`):
 print(`  `):
 
 elif nargs=1 and args[1]=DiracThm then
